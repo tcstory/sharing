@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>唠嗑</title>
+</head>
+<body>
+<aside class="topic-wrapper">
+    <user-bar v-on:signout="handleUserSignOut"
+            v-on:signin="handleUserSignIn"
+            v-on:signup="handleUserSignUp"
+            v-bind:user-avatar="userAvatar"
+            v-bind:user-name="userName"></user-bar>
+</aside>
+<main class="chatting-wrapper">
+    <login-window v-on:signinsuccess="handleSignInSuccess"></login-window>
+    <header class="main-header">
+        <div class="room-avatar"></div>
+        <div class="room-content">
+            <h2>vuejs/vue</h2>
+            <p class="text">数据驱动的组件，为现代化的 Web 界面而生</p>
+        </div>
+    </header>
+</main>
+</body>
+</html>
