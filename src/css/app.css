@@ -65,6 +65,7 @@ body {
 .chatting-area {
     width: 100%;
     position: relative;
+    -webkit-flex: 1 0 auto;
     flex: 1 0 auto;
 }
 .chatting-area .chatting {

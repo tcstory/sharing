@@ -45,7 +45,7 @@
         flex-shrink: 1;
     }
     .message {
-        display: -webkit-flex;
+        /*display: -webkit-flex;*/
         display: flex;
         padding: .5rem 1.5rem .5rem 3rem;
     }
