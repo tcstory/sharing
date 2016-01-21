@@ -40,12 +40,9 @@
 
 <style scoped>
     .message-wrapper {
-        left: 0;
-        position: absolute;
-        right: 0;
-        top: 0;
-        bottom: 0;
         overflow-y: scroll;
+        -webkit-flex-shrink: 1;
+        flex-shrink: 1;
     }
     .message {
         display: -webkit-flex;

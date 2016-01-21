@@ -44,7 +44,8 @@ var v = new Vue({
         'login-window': require('../components/login-window.vue'),
         'people-list': require('../components/people-list.vue'),
         'activities': require('../components/activities.vue'),
-        'messages': require('../components/messages.vue')
+        'messages': require('../components/messages.vue'),
+        'chat-input': require('../components/chat.vue')
     },
     events: {
         'signout': function () {

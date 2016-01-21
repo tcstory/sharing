@@ -28,6 +28,10 @@ body {
     height: 100%;
     -webkit-flex: 1 0 auto;
     flex: 1 0 auto;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
 }
 .chatting-wrapper .main-header {
     width: 100%;
@@ -60,16 +64,24 @@ body {
 }
 .chatting-area {
     width: 100%;
-    height: calc(100% - 4rem);
-    display: -webkit-flex;
-    display: flex;
+    position: relative;
+    flex: 1 0 auto;
 }
 .chatting-area .chatting {
-    -webkit-flex: 1 0 auto;
-    flex: 1 0 auto;
-    position: relative;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 14rem;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
 }
 .chatting-area .side-bar {
     width: 14rem;
-    flex: 0 0 auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
 }
