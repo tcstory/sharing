@@ -26,8 +26,8 @@ body {
 
 .chatting-wrapper {
     height: 100%;
-    -webkit-flex: 1 1 auto;
-    flex: 1 1 auto;
+    -webkit-flex: 1 0 auto;
+    flex: 1 0 auto;
 }
 .chatting-wrapper .main-header {
     width: 100%;
@@ -67,7 +67,9 @@ body {
 .chatting-area .chatting {
     -webkit-flex: 1 0 auto;
     flex: 1 0 auto;
+    position: relative;
 }
 .chatting-area .side-bar {
     width: 14rem;
+    flex: 0 0 auto;
 }

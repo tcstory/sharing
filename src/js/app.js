@@ -43,7 +43,8 @@ var v = new Vue({
         'user-bar': require('../components/user-bar.vue'),
         'login-window': require('../components/login-window.vue'),
         'people-list': require('../components/people-list.vue'),
-        'activities': require('../components/activities.vue')
+        'activities': require('../components/activities.vue'),
+        'messages': require('../components/messages.vue')
     },
     events: {
         'signout': function () {

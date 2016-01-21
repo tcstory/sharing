@@ -20,7 +20,10 @@
         </div>
     </header>
     <div class="chatting-area">
-        <div class="chatting"></div>
+        <div class="chatting">
+            <messages></messages>
+            <chat-input></chat-input>
+        </div>
         <div class="side-bar">
             <people-list v-bind:user-list="userList"></people-list>
             <activities v-bind:activities="activities"></activities>

@@ -102,8 +102,16 @@
         props:['userName', 'userAvatar'],
         data: function () {
             return {
-                openUserMenu: false,
-                isLogin: false
+                openUserMenu: false
+            }
+        },
+        computed: {
+            isLogin: function () {
+                if (this.userName.length != 0) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         },
         methods: {
