@@ -58,3 +58,16 @@ body {
     font-size: 14px;
     line-height: 30px;
 }
+.chatting-area {
+    width: 100%;
+    height: calc(100% - 4rem);
+    display: -webkit-flex;
+    display: flex;
+}
+.chatting-area .chatting {
+    -webkit-flex: 1 0 auto;
+    flex: 1 0 auto;
+}
+.chatting-area .side-bar {
+    width: 14rem;
+}

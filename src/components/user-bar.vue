@@ -33,13 +33,7 @@
     }
     .user-menu {
         background-color: rgb(42, 141, 96);
-        height: 4rem;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-justify-content: space-around;
-        justify-content: space-around;
-        -webkit-align-items: center;
-        align-items: center;
+        min-height: 4rem;
     }
     .user-menu.open {
         padding-bottom: .5rem;

@@ -7,14 +7,11 @@
 </head>
 <body>
 <aside class="topic-wrapper">
-    <user-bar v-on:signout="handleUserSignOut"
-            v-on:signin="handleUserSignIn"
-            v-on:signup="handleUserSignUp"
-            v-bind:user-avatar="userAvatar"
+    <user-bar v-bind:user-avatar="userAvatar"
             v-bind:user-name="userName"></user-bar>
 </aside>
 <main class="chatting-wrapper">
-    <login-window v-on:signinsuccess="handleSignInSuccess"></login-window>
+    <login-window></login-window>
     <header class="main-header">
         <div class="room-avatar"></div>
         <div class="room-content">
@@ -22,6 +19,13 @@
             <p class="text">数据驱动的组件，为现代化的 Web 界面而生</p>
         </div>
     </header>
+    <div class="chatting-area">
+        <div class="chatting"></div>
+        <div class="side-bar">
+            <people-list v-bind:user-list="userList"></people-list>
+            <activities v-bind:activities="activities"></activities>
+        </div>
+    </div>
 </main>
 </body>
 </html>

@@ -11,26 +11,55 @@ var v = new Vue({
     el: 'body',
     data: {
         userName: '',
-        userAvatar: ''
+        userAvatar: '',
+        userList: [{
+            userName: '爱情来过',
+            userId: 10000,
+            userAvatar: 'http://7qn8rp.com1.z0.glb.clouddn.com/dog.jpg'
+        }, {
+            userName: '中华田园犬',
+            userId: 10001,
+            userAvatar: 'http://7qn8rp.com1.z0.glb.clouddn.com/dog.jpg'
+        }, {
+            userName: '大兄弟',
+            userId: 10002,
+            userAvatar: 'http://7qn8rp.com1.z0.glb.clouddn.com/dog.jpg'
+        }],
+        activities: [
+            {
+                userName: '中华田园犬',
+                userId: 10001,
+                action: 'join'
+            },
+            {
+                userName: '大兄弟',
+                userId: 10002,
+                action: 'leave'
+            }
+        ]
     },
-    methods: {
-        handleUserSignOut: function () {
+    methods: {},
+    components: {
+        'user-bar': require('../components/user-bar.vue'),
+        'login-window': require('../components/login-window.vue'),
+        'people-list': require('../components/people-list.vue'),
+        'activities': require('../components/activities.vue')
+    },
+    events: {
+        'signout': function () {
             console.log('signout')
         },
-        handleUserSignIn: function () {
+        'signin': function () {
             this.$broadcast('handlesignin');
         },
-        handleUserSignUp: function () {
+        'signup': function () {
             this.$broadcast('handlesignup');
         },
-        handleSignInSuccess: function (data) {
+        'signinsuccess': function (data) {
             this.userName = data.userName;
             this.userAvatar = data.userAvatar;
             this.$broadcast('userhadlogined');
         }
-    },
-    components: {
-        'user-bar': require('../components/user-bar.vue'),
-        'login-window': require('../components/login-window.vue')
     }
+
 });
