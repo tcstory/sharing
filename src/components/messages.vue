@@ -41,8 +41,8 @@
 <style scoped>
     .message-wrapper {
         overflow-y: scroll;
-        -webkit-flex-shrink: 1;
-        flex-shrink: 1;
+        -webkit-flex: 1 1 auto;
+        flex: 1 1 auto;
     }
     .message {
         /*display: -webkit-flex;*/

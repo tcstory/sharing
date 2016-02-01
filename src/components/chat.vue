@@ -25,6 +25,7 @@
         display: flex;
         padding: .5rem;
         padding-left: 3rem;
+        min-height: 4.375rem;
     }
     .chat-input-wrapper textarea {
         border: none;
