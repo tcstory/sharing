@@ -12,6 +12,7 @@ var v = new Vue({
     data: {
         userName: '',
         userAvatar: '',
+        userId: -1,
         userList: [{
             userName: '爱情来过',
             userId: 10000,
@@ -45,6 +46,7 @@ var v = new Vue({
         handleSignOut: function () {
             this.userName = '';
             this.userAvatar = '';
+            this.userId = -1;
             this.$broadcast('userhadsignout');
         },
         handleSignUp: function () {
@@ -63,6 +65,7 @@ var v = new Vue({
         'signinsuccess': function (data) {
             this.userName = data.userName;
             this.userAvatar = data.userAvatar;
+            this.userId = data.userId;
             this.$broadcast('userhadlogined');
         }
     }

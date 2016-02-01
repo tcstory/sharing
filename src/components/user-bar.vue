@@ -99,7 +99,7 @@
 <script>
     "use strict";
     module.exports = {
-        props:['userName', 'userAvatar'],
+        props:['userName', 'userAvatar','userId'],
         data: function () {
             return {
                 openUserMenu: false
@@ -107,7 +107,7 @@
         },
         computed: {
             isLogin: function () {
-                if (this.userName.length != 0) {
+                if (this.userId !== -1) {
                     return true;
                 } else {
                     return false;
