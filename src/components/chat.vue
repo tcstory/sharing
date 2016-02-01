@@ -1,13 +1,12 @@
 <template>
-    <div class="chat-input-wrapper">
-        <div class="user-avatar"></div>
+    <div class="chat-input-wrapper" v-show="isLogin">
+        <div class="user-avatar" v-bind:style="{backgroundImage: 'url(' + userAvatar + ')' }"></div>
         <textarea name="" placeholder="点击这里,然后聊天.支持markdown"></textarea>
     </div>
 </template>
 
 <style scoped>
     .user-avatar {
-        background-image: url(http://7qn8rp.com1.z0.glb.clouddn.com/dog.jpg);
         margin: .25rem;
         margin-right:1rem;
         width: 1.875rem;
@@ -38,3 +37,18 @@
         color: black;
     }
 </style>
+
+<script>
+    module.exports = {
+        props: ['useName', 'userAvatar', 'userId'],
+        computed: {
+            isLogin: function () {
+                if (this.userId !== -1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
+</script>
