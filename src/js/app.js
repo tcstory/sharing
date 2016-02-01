@@ -38,7 +38,17 @@ var v = new Vue({
             }
         ]
     },
-    methods: {},
+    methods: {
+        handleSignIn: function () {
+            this.$broadcast('handlesignin');
+        },
+        handleSignOut: function () {
+            console.log('signout')
+        },
+        handleSignUp: function () {
+            this.$broadcast('handlesignup');
+        }
+    },
     components: {
         'user-bar': require('../components/user-bar.vue'),
         'login-window': require('../components/login-window.vue'),
@@ -48,15 +58,6 @@ var v = new Vue({
         'chat-input': require('../components/chat.vue')
     },
     events: {
-        'signout': function () {
-            console.log('signout')
-        },
-        'signin': function () {
-            this.$broadcast('handlesignin');
-        },
-        'signup': function () {
-            this.$broadcast('handlesignup');
-        },
         'signinsuccess': function (data) {
             this.userName = data.userName;
             this.userAvatar = data.userAvatar;
