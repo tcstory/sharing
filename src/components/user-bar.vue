@@ -130,7 +130,9 @@
         },
         events: {
             'userhadlogined': function () {
-                this.isLogin = true;
+            },
+            'userhadsignout': function () {
+                this.openUserMenu = false;
             }
         }
     }

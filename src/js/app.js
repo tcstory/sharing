@@ -43,7 +43,9 @@ var v = new Vue({
             this.$broadcast('handlesignin');
         },
         handleSignOut: function () {
-            console.log('signout')
+            this.userName = '';
+            this.userAvatar = '';
+            this.$broadcast('userhadsignout');
         },
         handleSignUp: function () {
             this.$broadcast('handlesignup');
@@ -64,5 +66,5 @@ var v = new Vue({
             this.$broadcast('userhadlogined');
         }
     }
-
 });
+
