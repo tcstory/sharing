@@ -46,11 +46,14 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/app.html',
-            filename: 'a.html',
+            filename: 'app.html',
             inject: 'body'
             //chunks: ['a','common']
         }),
-        new ExtractTextPlugin(debug ? 'css/app.css' : "css/app.[chunkhash:8].css")
+        new ExtractTextPlugin(debug ? 'css/app.css' : "css/app.[chunkhash:8].css"),
+        new webpack.ProvidePlugin({
+            'Utils': path.resolve('./src/js/utils/utils.js') //要用path.resolve,不然组件找不到模块
+        })
     ],
     devtool: debug ? 'source-map': ''
 };

@@ -40,7 +40,13 @@
 
 <script>
     module.exports = {
-        props: ['useName', 'userAvatar', 'userId'],
+        data: function () {
+            return {
+                userName: '',
+                userAvatar: '',
+                userId: -1
+            }
+        },
         computed: {
             isLogin: function () {
                 if (this.userId !== -1) {
@@ -48,6 +54,16 @@
                 } else {
                     return false;
                 }
+            }
+        },
+        events: {
+            'userhadsignedin': function (data) {
+                this.userName = data.userName;
+                this.userAvatar = data.userAvatar;
+                this.userId = data.userId;
+            },
+            'userhadsignedout': function () {
+                Utils.clearUserData(this);
             }
         }
     }

@@ -7,7 +7,7 @@
         </div>
         <div class="home user-menu-btn"><i class="fa fa-home"></i><span class="menu-text">主页</span></div>
         <div class="setting user-menu-btn"><i class="fa fa-cog"></i><span class="menu-text">设置</span></div>
-        <div v-on:click.stop="signOut" class="logout user-menu-btn"><i class="fa fa-sign-out"></i><span class="menu-text">退出</span></div>
+        <div v-on:click.stop="handleSignOut" class="logout user-menu-btn"><i class="fa fa-sign-out"></i><span class="menu-text">退出</span></div>
         <div class="sign-in-btn" v-show="!isLogin" v-on:click.stop="handleSignIn">登录</div>
         <div class="sign-up-btn" v-show="!isLogin" v-on:click.stop="handleSignUp">注册</div>
     </nav>
@@ -99,10 +99,12 @@
 <script>
     "use strict";
     module.exports = {
-        props:['userName', 'userAvatar','userId'],
         data: function () {
             return {
-                openUserMenu: false
+                openUserMenu: false,
+                userName: '',
+                userAvatar: '',
+                userId: -1
             }
         },
         computed: {
@@ -118,21 +120,25 @@
             toggleUserMenu: function () {
                 this.openUserMenu = !this.openUserMenu;
             },
-            signOut: function () {
-                this.$dispatch('signout');
+            handleSignOut: function () {
+                this.$dispatch('handlesignout');
             },
             handleSignIn: function () {
-                this.$dispatch('signin')
+                this.$dispatch('handlesignin')
             },
             handleSignUp: function () {
-                this.$dispatch('signup')
+                this.$dispatch('handlesignup')
             }
         },
         events: {
-            'userhadlogined': function () {
+            'userhadsignedin': function (data) {
+                this.userName = data.userName;
+                this.userAvatar = data.userAvatar;
+                this.userId = data.userId;
             },
-            'userhadsignout': function () {
+            'userhadsignedout': function () {
                 this.openUserMenu = false;
+                Utils.clearUserData(this);
             }
         }
     }

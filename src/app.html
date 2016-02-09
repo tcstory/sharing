@@ -7,13 +7,12 @@
 </head>
 <body>
 <aside class="topic-wrapper">
-    <user-bar v-on:signin="handleSignIn" v-on:signup="handleSignUp" v-on:signout="handleSignOut"
-              v-bind:user-avatar="userAvatar"
-              v-bind:user-id="userId"
-              v-bind:user-name="userName"></user-bar>
+    <user-bar v-on:handlesignin="handleSignIn"
+              v-on:handlesignup="handleSignUp"
+              v-on:handlesignout="handleSignOut"></user-bar>
 </aside>
 <main class="chatting-wrapper">
-    <login-window></login-window>
+    <login-window v-on:handlesigninsuccess="handleSignInSuccess"></login-window>
     <header class="main-header">
         <div class="room-avatar"></div>
         <div class="room-content">
@@ -24,9 +23,7 @@
     <div class="chatting-area">
         <div class="chatting">
             <messages></messages>
-            <chat-input v-bind:user-avatar="userAvatar"
-                        v-bind:user-id="userId"
-                        v-bind:user-name="userName"></chat-input>
+            <chat-input></chat-input>
         </div>
         <div class="side-bar">
             <people-list v-bind:user-list="userList"></people-list>

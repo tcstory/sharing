@@ -1,7 +1,7 @@
 <template>
     <div class="login-window" v-show="displayLoginWindow"
          v-on:click.stop="closeLoginWindow">
-        <div class="login-form" v-show="isLogin" v-on:click.stop="preventBubble">
+        <div class="login-form" v-show="isLoginPane" v-on:click.stop="preventBubble">
             <header class="title">登录</header>
             <div class="row"><input type="text" placeholder="用户名" v-model="userName"></div>
             <div class="row"><input type="password" placeholder="密码" v-model="userPassword"></div>
@@ -12,7 +12,7 @@
                 <p class="login-link" v-on:click.stop="toggleForm(false)">还未注册?立即体验</p>
             </div>
         </div>
-        <div class="signup-form" v-show="!isLogin" v-on:click.stop="preventBubble">
+        <div class="signup-form" v-show="!isLoginPane" v-on:click.stop="preventBubble">
             <header class="title">注册</header>
             <div class="row"><input type="text" placeholder="用户名" v-model="userName"></div>
             <div class="row"><input type="password" placeholder="密码" v-model="userPassword"></div>
@@ -183,7 +183,7 @@
         data: function () {
             return {
                 displayLoginWindow: false,
-                isLogin: false,
+                isLoginPane: false,
                 userName: '',
                 userPassword: '',
                 reenteredPassword: ''
@@ -191,7 +191,8 @@
         },
         methods: {
             toggleForm: function (value) {
-                this.isLogin = value;
+                this.isLoginPane = value;
+                resetLoginWindow(this);
             },
             closeLoginWindow: function () {
                 this.displayLoginWindow = false;
@@ -201,24 +202,26 @@
             },
             signIn: function () {
                 var _myself = this;
-                if (validate(_myself.userName)) {
+                if (Utils.validate(_myself.userName)) {
                     _myself.$http.post('http://127.0.0.1:9999/sign-in', {
                         user_name: _myself.userName,
                         user_password: _myself.userPassword
                     }).then(function (response) {
-                        clearUserData(_myself);
+                        Utils.clearUserData(_myself);
                         if (response.data.code === 200) {
                             _myself.displayLoginWindow = false;
-                            _myself.$dispatch('signinsuccess',{
+                            resetLoginWindow(_myself);
+                            _myself.$dispatch('handlesigninsuccess',{
                                 userName: response.data.userName,
-                                userAvatar: response.data.userAvatar
+                                userAvatar: response.data.userAvatar,
+                                userId: response.data.userId
                             });
                         } else {
-                            _myself.$dispatch('signinerror');
+                            _myself.$dispatch('handlesigninerror');
                         }
                     })
                 } else {
-                    clearUserData(_myself);
+                    Utils.clearUserData(_myself);
                 }
             },
             signUp: function () {
@@ -226,27 +229,25 @@
             }
         },
         events: {
-            handlesignin: function () {
+            'signin': function () {
                 this.displayLoginWindow = true;
-                this.isLogin = true;
+                this.isLoginPane = true;
             },
-            handlesignup: function () {
+            'signup': function () {
                 this.displayLoginWindow = true;
-                this.isLogin = false;
+                this.isLoginPane = false;
             }
         }
     };
-
-    function validate(name) {
-        if (/\w{3,6}/g.test(name)) {
-            return true;
+    function resetLoginWindow(instance) {
+        if (instance.isLoginPane) {
+            instance.userName = '';
+            instance.userPassword = '';
+            instance.reenteredPassword = ''
         } else {
-            return false;
+            instance.userName = '';
+            instance.userPassword = '';
         }
     }
-    function clearUserData(v) {
-        v.userName = '';
-        v.userPassword = '';
-        v.reenteredPassword = '';
-    }
+
 </script>

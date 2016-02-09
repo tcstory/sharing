@@ -41,16 +41,24 @@ var v = new Vue({
     },
     methods: {
         handleSignIn: function () {
-            this.$broadcast('handlesignin');
+            this.$broadcast('signin');
         },
         handleSignOut: function () {
-            this.userName = '';
-            this.userAvatar = '';
-            this.userId = -1;
-            this.$broadcast('userhadsignout');
+            Utils.clearUserData(this);
+            this.$broadcast('userhadsignedout');
         },
         handleSignUp: function () {
-            this.$broadcast('handlesignup');
+            this.$broadcast('signup');
+        },
+        handleSignInSuccess: function (data) {
+            this.userName = data.userName;
+            this.userAvatar = data.userAvatar;
+            this.userId = data.userId;
+            this.$broadcast('userhadsignedin', {
+                userName: this.userName,
+                userAvatar: this.userAvatar,
+                userId: this.userId
+            });
         }
     },
     components: {
@@ -60,14 +68,7 @@ var v = new Vue({
         'activities': require('../components/activities.vue'),
         'messages': require('../components/messages.vue'),
         'chat-input': require('../components/chat.vue')
-    },
-    events: {
-        'signinsuccess': function (data) {
-            this.userName = data.userName;
-            this.userAvatar = data.userAvatar;
-            this.userId = data.userId;
-            this.$broadcast('userhadlogined');
-        }
     }
 });
+
 
