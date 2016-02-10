@@ -17,8 +17,12 @@ process.argv.forEach(function (item) {
         debug = true
     }
 });
+var vuejsFile = debug ? './src/js/vendor/vue/vue.js':'./src/js/vendor/vue/vue.min.js';
 module.exports = {
-    entry:  './src/js/app.js',
+    entry:  {
+        app: './src/js/app.js',
+        vendor: [vuejsFile, './src/js/vendor/socket.io-client/socket.io.js']
+    },
     output: {
         path: distDir,
         filename: debug ? 'js/app.js':'js/'+"app.[chunkhash:8].js"
@@ -54,6 +58,11 @@ module.exports = {
         new webpack.ProvidePlugin({
             'Utils': path.resolve('./src/js/utils/utils.js'), //要用path.resolve,不然组件找不到模块
             'ConfigMap': path.resolve('./src/js/config.js')
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "vendor",
+            filename: debug ? "js/vendor.js": "js/vendor.[chunkhash:8].js",
+            minChunks: Infinity
         })
     ],
     devtool: debug ? 'source-map': ''

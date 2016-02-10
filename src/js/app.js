@@ -5,6 +5,7 @@
 
 require('../css/app.css');
 require('../css/font-awesome/css/font-awesome.css');
+require("socket.io-client");
 var Vue = require('./vendor/vue/vue.js');
 Vue.use(require('vue-resource'));
 var v = new Vue({
@@ -39,6 +40,9 @@ var v = new Vue({
             //    userId: 10002,
             //    action: 'leave'
             //}
+        ],
+        messages: [
+
         ]
     },
     methods: {

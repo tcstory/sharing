@@ -14,6 +14,8 @@ gulp.task('prepare', function () {
         .pipe(gulp.dest(path.join(sourceDir, 'css/font-awesome/css')));
     gulp.src('node_modules/font-awesome/fonts/*')
         .pipe(gulp.dest(path.join(sourceDir, 'css/font-awesome/fonts/')));
+    gulp.src('node_modules/socket.io-client/*')
+        .pipe(gulp.dest(path.join(sourceDir, 'js/vendor/socket.io-client/')))
 });
 
 gulp.task('clean', function () {
