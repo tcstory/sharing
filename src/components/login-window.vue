@@ -203,7 +203,7 @@
             signIn: function () {
                 var _myself = this;
                 if (Utils.validate(_myself.userName)) {
-                    _myself.$http.post('http://127.0.0.1:9999/sign-in', {
+                    _myself.$http.post(ConfigMap.apiServer + '/sign-in', {
                         user_name: _myself.userName,
                         user_password: _myself.userPassword
                     }).then(function (response) {
