@@ -5,45 +5,20 @@
 
 require('../css/app.css');
 require('../css/font-awesome/css/font-awesome.css');
-require("socket.io-client");
+var io = require("socket.io-client");
 var Vue = require('./vendor/vue/vue.js');
 Vue.use(require('vue-resource'));
+window.socket = io(ConfigMap.apiServer);
+
 var v = new Vue({
     el: 'body',
     data: {
         userName: '',
         userAvatar: '',
         userId: -1,
-        userList: [
-            //{
-            //    userName: '爱情来过',
-            //    userId: 10000,
-            //    userAvatar: 'http://7qn8rp.com1.z0.glb.clouddn.com/dog.jpg'
-            //}, {
-            //    userName: '中华田园犬',
-            //    userId: 10001,
-            //    userAvatar: 'http://7qn8rp.com1.z0.glb.clouddn.com/dog.jpg'
-            //}, {
-            //    userName: '大兄弟',
-            //    userId: 10002,
-            //    userAvatar: 'http://7qn8rp.com1.z0.glb.clouddn.com/dog.jpg'
-            //}
-        ],
-        activities: [
-            //{
-            //    userName: '中华田园犬',
-            //    userId: 10001,
-            //    action: 'join'
-            //},
-            //{
-            //    userName: '大兄弟',
-            //    userId: 10002,
-            //    action: 'leave'
-            //}
-        ],
-        messages: [
-
-        ]
+        userList: [],
+        activities: [],
+        messages: []
     },
     methods: {
         handleSignIn: function () {
@@ -77,12 +52,19 @@ var v = new Vue({
     },
     ready: function () {
         var _myself = this;
-        this.$http.get(ConfigMap.apiServer + '/serv/basic-info').then(function (response) {
-            if (response.data.code === 200) {
-                _myself.userList = response.data.userList;
-                _myself.activities = response.data.activities;
+        socket.on('activities', function (msg) {
+            _myself.activities = msg;
+        });
+        socket.on('user list', function (msg) {
+            _myself.userList = msg;
+        });
+        socket.on('chat messages', function (msg) {
+            if (_myself.messages.length === 0) {
+                _myself.messages = msg;
+            } else {
+                _myself.messages = _myself.messages.concat(msg);
             }
-        })
+        });
     }
 });
 

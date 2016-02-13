@@ -19,3 +19,4 @@ module.exports = {
     validate: validate,
     clearUserData: clearUserData
 };
+

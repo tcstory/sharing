@@ -1,7 +1,7 @@
 <template>
     <div class="chat-input-wrapper" v-show="isLogin">
         <div class="user-avatar" v-bind:style="{backgroundImage: 'url(' + userAvatar + ')' }"></div>
-        <textarea name="" placeholder="点击这里,然后聊天.支持markdown"></textarea>
+        <textarea name="" placeholder="点击这里,然后聊天.支持markdown" v-model="userInputMsg" v-on:keydown.enter.stop.prevent="sendMsg"></textarea>
     </div>
 </template>
 
@@ -44,13 +44,24 @@
             return {
                 userName: '',
                 userAvatar: '',
-                userId: -1
+                userId: -1,
+                userInputMsg: ''
             }
         },
         computed: {
             isLogin: function () {
                 if (this.userId !== -1) {
                     return true;
+                } else {
+                    return false;
+                }
+            }
+        },
+        methods: {
+            sendMsg: function () {
+                if (String.prototype.trim.call(this.userInputMsg).length != 0) {
+                    socket.emit('chat message', this.userInputMsg);
+                    this.userInputMsg = '';
                 } else {
                     return false;
                 }

@@ -7,55 +7,6 @@
                 <div class="message-content" v-text="message.content"></div>
             </div>
         </div>
-        <!--<div class="message">-->
-            <!--<div class="user-avatar"></div>-->
-            <!--<div class="message-content-wrapper">-->
-                <!--<div class="user-name">中华田园犬</div>-->
-                <!--<div class="message-content">这只是一个简单的测试而已</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="message">-->
-            <!--<div class="user-avatar"></div>-->
-            <!--<div class="message-content-wrapper">-->
-                <!--<div class="user-name">大兄弟<span class="message-time">12:30</span></div>-->
-                <!--<div class="message-content">我还有很多很多的话要我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的说的</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="message">-->
-            <!--<div class="user-avatar"></div>-->
-            <!--<div class="message-content-wrapper">-->
-                <!--<div class="user-name">大兄弟</div>-->
-                <!--<div class="message-content">我还有很多很多的话要我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的说的</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="message">-->
-            <!--<div class="user-avatar"></div>-->
-            <!--<div class="message-content-wrapper">-->
-                <!--<div class="user-name">大兄弟</div>-->
-                <!--<div class="message-content">我还有很多很多的话要我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的说的</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="message">-->
-            <!--<div class="user-avatar"></div>-->
-            <!--<div class="message-content-wrapper">-->
-                <!--<div class="user-name">大兄弟</div>-->
-                <!--<div class="message-content">我还有很多很多的话要我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的说的</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="message">-->
-            <!--<div class="user-avatar"></div>-->
-            <!--<div class="message-content-wrapper">-->
-                <!--<div class="user-name">大兄弟</div>-->
-                <!--<div class="message-content">我还有很多很多的话要我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的说的</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="message">-->
-            <!--<div class="user-avatar"></div>-->
-            <!--<div class="message-content-wrapper">-->
-                <!--<div class="user-name">大兄弟</div>-->
-                <!--<div class="message-content">我还有很多很多的话要我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的我还有很多很多的话要说的说的</div>-->
-            <!--</div>-->
-        <!--</div>-->
     </div>
 </template>
 
