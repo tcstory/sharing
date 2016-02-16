@@ -8,7 +8,7 @@ require('../css/font-awesome/css/font-awesome.css');
 var io = require("socket.io-client");
 var Vue = require('./vendor/vue/vue.js');
 Vue.use(require('vue-resource'));
-window.socket = io(ConfigMap.apiServer);
+window.socket = io();
 
 var v = new Vue({
     el: 'body',
