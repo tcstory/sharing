@@ -8,7 +8,6 @@ require('../css/font-awesome/css/font-awesome.css');
 var io = require("socket.io-client");
 var Vue = require('./vendor/vue/vue.js');
 Vue.use(require('vue-resource'));
-window.socket = io();
 
 var v = new Vue({
     el: 'body',
@@ -52,17 +51,33 @@ var v = new Vue({
     },
     ready: function () {
         var _myself = this;
-        socket.on('activities', function (msg) {
-            _myself.activities = msg;
-        });
-        socket.on('user list', function (msg) {
-            _myself.userList = msg;
-        });
-        socket.on('chat messages', function (msg) {
-            if (_myself.messages.length === 0) {
-                _myself.messages = msg;
-            } else {
-                _myself.messages = _myself.messages.concat(msg);
+        this.$http.get(ConfigMap.apiServer + '/serv/user/basic-info',{}, {
+            xhr: {
+                withCredentials: true
+            }
+        }).then(function (response) {
+            if (response.data.code === 200) {
+                _myself.userName = response.userName;
+                _myself.userAvatar = response.userAvatar;
+                _myself.userId = response.userId;
+                var socket = io();
+                window.socket = socket;
+                socket.on('activities', function (msg) {
+                    _myself.activities = msg;
+                });
+                socket.on('user list', function (msg) {
+                    _myself.userList = msg;
+                });
+                socket.on('chat messages', function (msg) {
+                    if (_myself.messages.length === 0) {
+                        _myself.messages = msg;
+                    } else {
+                        _myself.messages = _myself.messages.concat(msg);
+                    }
+                });
+                socket.on('disconnect', function(){
+                    console.log('nani?')
+                });
             }
         });
     }

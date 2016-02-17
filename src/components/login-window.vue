@@ -206,6 +206,10 @@
                     _myself.$http.post(ConfigMap.apiServer + '/serv/user/sign-in', {
                         user_name: _myself.userName,
                         user_password: _myself.userPassword
+                    }, {
+                        xhr: {
+                            withCredentials: true
+                        }
                     }).then(function (response) {
                         Utils.clearUserData(_myself);
                         if (response.data.code === 200) {

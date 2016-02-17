@@ -1,5 +1,5 @@
 <template>
-    <div class="chat-input-wrapper" v-show="isLogin">
+    <div class="chat-input-wrapper">
         <div class="user-avatar" v-bind:style="{backgroundImage: 'url(' + userAvatar + ')' }"></div>
         <textarea name="" placeholder="点击这里,然后聊天.支持markdown" v-model="userInputMsg" v-on:keydown.enter.stop.prevent="sendMsg"></textarea>
     </div>
@@ -46,15 +46,6 @@
                 userAvatar: '',
                 userId: -1,
                 userInputMsg: ''
-            }
-        },
-        computed: {
-            isLogin: function () {
-                if (this.userId !== -1) {
-                    return true;
-                } else {
-                    return false;
-                }
             }
         },
         methods: {
