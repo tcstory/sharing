@@ -66,6 +66,11 @@
             },
             'userhadsignedout': function () {
                 Utils.clearUserData(this);
+            },
+            'anonymoususer': function (data) {
+                this.userName = data.userName;
+                this.userAvatar = data.userAvatar;
+                this.userId = data.userId;
             }
         }
     }

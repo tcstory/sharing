@@ -1,6 +1,6 @@
 <template>
     <div class="message-wrapper">
-        <div class="message" v-for="message in messages">
+        <div class="message" v-for="message in messages" >
             <div class="user-avatar" v-bind:style="{backgroundImage: 'url('+ message.userAvatar + ')'}"></div>
             <div class="message-content-wrapper">
                 <div class="user-name" v-text="message.userName"></div>
@@ -17,7 +17,7 @@
         flex: 1 1 auto;
     }
     .message {
-        /*display: -webkit-flex;*/
+        display: -webkit-flex;
         display: flex;
         padding: .5rem 1.5rem .5rem 3rem;
     }
@@ -60,6 +60,11 @@
 
 <script>
     module.exports = {
-        props: ['messages']
+        props: ['messages'],
+        watch: {
+            messages: function () {
+                this.$el.scrollTop = this.$el.scrollHeight;
+            }
+        }
     }
 </script>

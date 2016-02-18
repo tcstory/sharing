@@ -39,6 +39,13 @@ var v = new Vue({
                 userAvatar: this.userAvatar,
                 userId: this.userId
             });
+        },
+        handleAnonymousUser: function () {
+            this.$broadcast('anonymoususer', {
+                userName: this.userName,
+                userAvatar: this.userAvatar,
+                userId: this.userId
+            });
         }
     },
     components: {
@@ -56,10 +63,12 @@ var v = new Vue({
                 withCredentials: true
             }
         }).then(function (response) {
-            if (response.data.code === 200) {
-                _myself.userName = response.userName;
-                _myself.userAvatar = response.userAvatar;
-                _myself.userId = response.userId;
+            var data= response.data;
+            if (data.code === 200) {
+                _myself.userName = data.userName;
+                _myself.userAvatar = data.userAvatar;
+                _myself.userId = data.userId;
+                _myself.handleAnonymousUser();
                 var socket = io();
                 window.socket = socket;
                 socket.on('activities', function (msg) {
