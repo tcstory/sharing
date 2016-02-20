@@ -78,10 +78,10 @@ var v = new Vue({
                     _myself.userList = msg;
                 });
                 socket.on('chat messages', function (msg) {
-                    if (_myself.messages.length === 0) {
+                    if (Array.isArray(msg)) {
                         _myself.messages = msg;
                     } else {
-                        _myself.messages = _myself.messages.concat(msg);
+                        _myself.messages.push(msg);
                     }
                 });
                 socket.on('disconnect', function(){
