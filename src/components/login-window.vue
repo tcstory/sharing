@@ -1,5 +1,5 @@
 <template>
-    <div class="login-window" v-show="displayLoginWindow"
+    <div class="login-window" v-show="displayLoginWindow" transition="showing"
          v-on:click.stop="closeLoginWindow">
         <div class="login-form" v-show="isLoginPane" v-on:click.stop="preventBubble">
             <header class="title">登录</header>
@@ -174,6 +174,44 @@
         color: #444;
         display: block;
         margin-top: 12px;
+    }
+    @-webkit-keyframes showing-in {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes showing-out {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+    @keyframes showing-in {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    @keyframes showing-out {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+    .showing-enter {
+        animation: showing-in 300ms;
+    }
+    .showing-leave {
+        animation: showing-out 300ms;
     }
 </style>
 
