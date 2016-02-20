@@ -72,7 +72,7 @@ var v = new Vue({
                 var socket = io();
                 window.socket = socket;
                 socket.on('activities', function (msg) {
-                    _myself.activities = msg;
+                    _myself.activities.unshift(msg);
                 });
                 socket.on('user list', function (msg) {
                     _myself.userList = msg;
