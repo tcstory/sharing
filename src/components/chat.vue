@@ -51,7 +51,7 @@
         methods: {
             sendMsg: function () {
                 if (String.prototype.trim.call(this.userInputMsg).length != 0) {
-                    socket.emit('chat message', this.userInputMsg);
+                    window.socket.emit('chat message', this.userInputMsg);
                     this.userInputMsg = '';
                 } else {
                     return false;

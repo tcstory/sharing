@@ -251,15 +251,16 @@
                     }).then(function (response) {
                         Utils.clearUserData(_myself);
                         if (response.data.code === 200) {
-                            _myself.displayLoginWindow = false;
-                            resetLoginWindow(_myself);
-                            _myself.$dispatch('handlesigninsuccess',{
-                                userName: response.data.userName,
-                                userAvatar: response.data.userAvatar,
-                                userId: response.data.userId
-                            });
+//                            _myself.displayLoginWindow = false;
+//                            resetLoginWindow(_myself);
+//                            _myself.$dispatch('handlesigninsuccess',{
+//                                userName: response.data.userName,
+//                                userAvatar: response.data.userAvatar,
+//                                userId: response.data.userId
+//                            });
+                            window.location.reload();
                         } else {
-                            _myself.$dispatch('handlesigninerror');
+//                            _myself.$dispatch('handlesigninerror');
                         }
                     })
                 } else {

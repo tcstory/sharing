@@ -121,7 +121,16 @@
                 this.openUserMenu = !this.openUserMenu;
             },
             handleSignOut: function () {
-                this.$dispatch('handlesignout');
+                this.$http.get(ConfigMap.apiServer + '/serv/user/sign-out',{}, {
+                    xhr: {
+                        withCredentials: true
+                    }
+                }).then(function (response) {
+                    if (response.data.code === 200) {
+                        window.location.reload();
+                    }
+                });
+//                this.$dispatch('handlesignout');
             },
             handleSignIn: function () {
                 this.$dispatch('handlesignin')
