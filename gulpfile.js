@@ -19,5 +19,5 @@ gulp.task('prepare', function () {
 });
 
 gulp.task('clean', function () {
-    return del('dist/')
+    return del(['dist/**','!dist','!dist/assets/**']);
 });
