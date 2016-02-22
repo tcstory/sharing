@@ -249,7 +249,6 @@
                             withCredentials: true
                         }
                     }).then(function (response) {
-                        Utils.clearUserData(_myself);
                         if (response.data.code === 200) {
 //                            _myself.displayLoginWindow = false;
 //                            resetLoginWindow(_myself);
@@ -260,6 +259,7 @@
 //                            });
                             window.location.reload();
                         } else {
+                            Utils.clearUserData(_myself);
 //                            _myself.$dispatch('handlesigninerror');
                         }
                     })
@@ -268,7 +268,23 @@
                 }
             },
             signUp: function () {
-
+                var _myself = this;
+                if (Utils.validate(_myself.userName)) {
+                    _myself.$http.post(ConfigMap.apiServer + '/serv/user/sign-up', {
+                        user_name: _myself.userName,
+                        user_password: _myself.userPassword
+                    }, {
+                        xhr: {
+                            withCredentials: true
+                        }
+                    }).then(function (reponse) {
+                        if (reponse.data.code === 200) {
+                            window.location.reload();
+                        } else {
+                            Utils.clearUserData(_myself);
+                        }
+                    })
+                }
             }
         },
         events: {
