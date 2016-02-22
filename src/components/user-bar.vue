@@ -8,8 +8,10 @@
         <div class="home user-menu-btn"><i class="fa fa-home"></i><span class="menu-text">主页</span></div>
         <div class="setting user-menu-btn"><i class="fa fa-cog"></i><span class="menu-text">设置</span></div>
         <div v-on:click.stop="handleSignOut" class="logout user-menu-btn"><i class="fa fa-sign-out"></i><span class="menu-text">退出</span></div>
-        <div class="sign-in-btn" v-show="!isLogin" v-on:click.stop="handleSignIn">登录</div>
-        <div class="sign-up-btn" v-show="!isLogin" v-on:click.stop="handleSignUp">注册</div>
+        <div class="buttons-wrapper" v-show="!isLogin">
+            <div class="sign-in-btn" v-on:click.stop="handleSignIn">登录</div>
+            <div class="sign-up-btn" v-on:click.stop="handleSignUp">注册</div>
+        </div>
     </nav>
 </template>
 
@@ -93,6 +95,15 @@
         line-height: 2rem;
         color: white;
         cursor: pointer;
+    }
+    .buttons-wrapper {
+        display: -webkit-flex;
+        display: flex;
+        -webkit-justify-content: space-around;
+        justify-content: space-around;
+        -webkit-align-items: center;
+        align-items: center;
+        height: 4rem;
     }
 </style>
 
