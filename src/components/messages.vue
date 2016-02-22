@@ -3,7 +3,7 @@
         <div class="message" v-for="message in messages" >
             <div class="user-avatar" v-bind:style="{backgroundImage: 'url('+ message.userAvatar + ')'}"></div>
             <div class="message-content-wrapper">
-                <div class="user-name" v-text="message.userName"></div>
+                <div class="user-name">{{message.userName}}<span class="message-time" v-text="message.timestamp | timestamp"></span></div>
                 <div class="message-content" v-text="message.content"></div>
             </div>
         </div>
@@ -37,10 +37,12 @@
     }
 
     .message-content-wrapper {
-        /*-webkit-flex: 1 0 auto;*/
-        /*flex: 1 0 auto;*/
+        word-wrap: break-word;
+        word-break: break-all;
         line-height: 1.4;
         color: hsl(0, 0%, 20%);
+        -webkit-flex:1;
+        flex:1;
     }
 
     .user-avatar {
@@ -64,6 +66,11 @@
         watch: {
             messages: function () {
                 this.$el.scrollTop = this.$el.scrollHeight;
+            }
+        },
+        filters: {
+            'timestamp': function (value) {
+                return new Date(value).toLocaleTimeString("chinese", {hour12:false}).split(' ')[0];
             }
         }
     }
