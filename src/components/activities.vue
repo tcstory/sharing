@@ -1,7 +1,7 @@
 <template>
     <div class="activities">
         <header>活动</header>
-        <div class="activity" v-for="activity in activities">
+        <div class="activity" v-for="activity in activities" v-bind:class="setActionColor(activity)">
             <span class="activity-icon">
                 <i class="fa fa-user"></i>
             </span>
@@ -33,6 +33,18 @@
         border-radius: .25rem;
         margin-right: .25rem;
     }
+    .activity.join .activity-icon {
+        color: hsl(174, 100%, 29%);
+    }
+    .activity.join .action-text {
+        color: hsl(199, 98%, 48%);
+    }
+    .activity.leave .activity-icon {
+        color: hsl(0, 0%, 62%);
+    }
+    .activity.leave .action-text {
+        color: hsl(4, 90%, 58%);
+    }
 </style>
 
 <script>
@@ -56,6 +68,14 @@
                         return configMap.actionText.join;
                     case 'leave':
                         return configMap.actionText.leave;
+                }
+            },
+            setActionColor: function (activity) {
+                switch (activity.action) {
+                    case 'join':
+                        return 'join';
+                    case 'leave':
+                        return 'leave';
                 }
             }
         },
