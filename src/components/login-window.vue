@@ -260,12 +260,7 @@
                             window.location.reload();
                         } else if (response.data.code === 5000) {
                             _myself.$dispatch('handleshowmessagewindow', response.data.msg);
-                            Utils.clearUserData(_myself);
-//                            _myself.$dispatch('handlesigninsuccess',{
-//                                userName: response.data.userName,
-//                                userAvatar: response.data.userAvatar,
-//                                userId: response.data.userId
-//                            });
+                            resetLoginWindow(_myself);
                         }
                     })
                 } else {
@@ -287,7 +282,7 @@
                             window.location.reload();
                         } else {
                             _myself.$dispatch('handleshowmessagewindow', response.data.msg);
-                            Utils.clearUserData(_myself);
+                            resetLoginWindow(_myself);
                         }
                     })
                 }
@@ -305,7 +300,7 @@
         }
     };
     function resetLoginWindow(instance) {
-        if (instance.isLoginPane) {
+        if (!instance.isLoginPane) {
             instance.userName = '';
             instance.userPassword = '';
             instance.reenteredPassword = ''
