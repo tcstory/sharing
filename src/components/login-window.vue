@@ -259,7 +259,9 @@
 //                            });
                             window.location.reload();
                         } else if (response.data.code === 5000) {
-                            _myself.$dispatch('handleshowmessagewindow', response.data.msg);
+                            var msg = response.data.msg;
+                            msg.type = 'error';
+                            _myself.$dispatch('handleshowmessagewindow', msg);
                             resetLoginWindow(_myself);
                         }
                     })
@@ -281,7 +283,9 @@
                         if (response.data.code === 200) {
                             window.location.reload();
                         } else {
-                            _myself.$dispatch('handleshowmessagewindow', response.data.msg);
+                            var msg = response.data.msg;
+                            msg.type = 'error';
+                            _myself.$dispatch('handleshowmessagewindow', msg);
                             resetLoginWindow(_myself);
                         }
                     })
