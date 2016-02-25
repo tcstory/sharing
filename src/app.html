@@ -12,7 +12,8 @@
               v-on:handlesignout="handleSignOut"></user-bar>
 </aside>
 <main class="chatting-wrapper">
-    <login-window v-on:handlesigninsuccess="handleSignInSuccess"></login-window>
+    <login-window v-on:handlesigninsuccess="handleSignInSuccess"
+            v-on:handleshowmessagewindow="handleShowMessageWindow"></login-window>
     <header class="main-header">
         <div class="room-avatar"></div>
         <div class="room-content">
@@ -31,5 +32,6 @@
         </div>
     </div>
 </main>
+<message-manager></message-manager>
 </body>
 </html>

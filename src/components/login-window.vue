@@ -258,9 +258,14 @@
 //                                userId: response.data.userId
 //                            });
                             window.location.reload();
-                        } else {
+                        } else if (response.data.code === 5000) {
+                            _myself.$dispatch('handleshowmessagewindow', response.data.msg);
                             Utils.clearUserData(_myself);
-//                            _myself.$dispatch('handlesigninerror');
+//                            _myself.$dispatch('handlesigninsuccess',{
+//                                userName: response.data.userName,
+//                                userAvatar: response.data.userAvatar,
+//                                userId: response.data.userId
+//                            });
                         }
                     })
                 } else {
@@ -277,10 +282,11 @@
                         xhr: {
                             withCredentials: true
                         }
-                    }).then(function (reponse) {
-                        if (reponse.data.code === 200) {
+                    }).then(function (response) {
+                        if (response.data.code === 200) {
                             window.location.reload();
                         } else {
+                            _myself.$dispatch('handleshowmessagewindow', response.data.msg);
                             Utils.clearUserData(_myself);
                         }
                     })

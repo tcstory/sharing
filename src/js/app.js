@@ -49,6 +49,9 @@ var v = new Vue({
                 userAvatar: this.userAvatar,
                 userId: this.userId
             });
+        },
+        handleShowMessageWindow: function (msg) {
+            this.$broadcast('showmessagewindow',msg)
         }
     },
     components: {
@@ -57,7 +60,8 @@ var v = new Vue({
         'people-list': require('../components/people-list.vue'),
         'activities': require('../components/activities.vue'),
         'messages': require('../components/messages.vue'),
-        'chat-input': require('../components/chat.vue')
+        'chat-input': require('../components/chat.vue'),
+        'message-manager': require('../components/message-manager.vue')
     },
     ready: function () {
         var _myself = this;
