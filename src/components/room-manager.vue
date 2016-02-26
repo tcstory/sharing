@@ -17,10 +17,12 @@
                 </div>
                 <div class="row logo-row">
                     <div class="room-logo-wrapper">
-                        <div class="room-logo"></div>
-                        <div class="logo-cover"><i class=" fa fa-camera-retro"></i></div>
+                        <div class="room-logo" v-bind:style="{backgroundImage: 'url(' + logoImg + ')'}"></div>
+                        <div class="logo-cover" v-show="showLogoCover"><i class=" fa fa-camera-retro"></i></div>
                     </div>
-                    <button class="upload-btn">上传logo</button>
+                    <input type="file" accept="image/*" style="display: none"
+                           v-on:change="handleInputChange($event)" class="room-logo-input">
+                    <button class="upload-btn" v-on:click.stop="handleUploadLogo">上传</button>
                 </div>
                 <div class="row input-row">
                     <input type="text" name="room-name" placeholder="房间名字">
@@ -105,6 +107,9 @@
     .room-logo {
         width: 3.125rem;
         height: 3.125rem;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        border-radius: .25rem;
     }
 
     .logo-cover {
@@ -122,8 +127,8 @@
         color: hsl(0, 100%, 100%);
         font-size: 2rem;
         border-radius: .5rem;
+        visibility: visible;
     }
-
     .logo-row {
         display: flex;
         flex-direction: column;
@@ -143,6 +148,7 @@
         margin-top: .5rem;
         background-color: hsl(199, 98%, 48%);
         cursor: pointer;
+        outline: none;
     }
 
     .close-btn-row {
@@ -174,15 +180,18 @@
         text-align: center;
 
     }
+
     .input-row > input {
         width: 11rem;
         height: 1.5rem;
         text-align: center;
     }
+
     .btn-row {
         text-align: center;
         margin-top: 1rem;
     }
+
     .confirm-btn {
         height: 2rem;
         width: 4rem;
@@ -192,6 +201,11 @@
         color: hsl(0, 100%, 100%);
         border-radius: 1rem;
         cursor: pointer;
+        outline: none;
+    }
+    .confirm-btn.disabled {
+        background-color: gray;
+        pointer-events: none;
     }
 </style>
 
@@ -201,7 +215,9 @@
         data: function () {
             return {
                 open: false,
-                showFormWindow: false
+                showFormWindow: false,
+                logoImg: '',
+                showLogoCover: true
             }
         },
         methods: {
@@ -213,7 +229,33 @@
             },
             closeFormWindow: function () {
                 this.showFormWindow = false;
+            },
+            handleUploadLogo: function () {
+                document.querySelector('.room-logo-input').click();
+            },
+            handleInputChange: function (ev) {
+                var _myself = this;
+                var file = ev.target.files[0];
+                if (file.size > 200000) {
+                    this.$dispatch('handleshowmessagewindow', {
+                        title: '错误',
+                        content: '上传的图片太大',
+                        type: 'error'
+                    });
+                    ev.target.files = [];
+                    ev.target.value = '';
+                    _myself.logoImg = '';
+                    _myself.showLogoCover = true;
+                } else {
+                    var reader = new FileReader();
+                    reader.onload = function (ev) {
+                        _myself.logoImg = reader.result;
+                        _myself.showLogoCover = false;
+                    };
+                    reader.readAsDataURL(file);
+                }
             }
         }
-    }
+    };
+
 </script>

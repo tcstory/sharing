@@ -10,7 +10,7 @@
     <user-bar v-on:handlesignin="handleSignIn"
               v-on:handlesignup="handleSignUp"
               v-on:handlesignout="handleSignOut"></user-bar>
-    <room-manager></room-manager>
+    <room-manager v-on:handleshowmessagewindow="handleShowMessageWindow"></room-manager>
 </aside>
 <main class="chatting-wrapper">
     <login-window v-on:handlesigninsuccess="handleSignInSuccess"
