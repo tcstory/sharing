@@ -61,7 +61,8 @@ var v = new Vue({
         'activities': require('../components/activities.vue'),
         'messages': require('../components/messages.vue'),
         'chat-input': require('../components/chat.vue'),
-        'message-manager': require('../components/message-manager.vue')
+        'message-manager': require('../components/message-manager.vue'),
+        'room-manager': require('../components/room-manager.vue')
     },
     ready: function () {
         var _myself = this;
