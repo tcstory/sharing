@@ -20,18 +20,18 @@
                         <div class="room-logo" v-bind:style="{backgroundImage: 'url(' + logoImg + ')'}"></div>
                         <div class="logo-cover" v-show="showLogoCover"><i class=" fa fa-camera-retro"></i></div>
                     </div>
-                    <input type="file" accept="image/*" style="display: none"
+                    <input v-el:roomlogo type="file" accept="image/*" style="display: none"
                            v-on:change="handleInputChange($event)" class="room-logo-input">
                     <button class="upload-btn" v-on:click.stop="handleUploadLogo">上传</button>
                 </div>
                 <div class="row input-row">
-                    <input type="text" name="room-name" placeholder="房间名字">
+                    <input type="text" v-model="roomName" placeholder="房间名字">
                 </div>
                 <div class="row input-row">
-                    <input type="text" name="room-description" placeholder="房间介绍">
+                    <input type="text" v-model="roomDescription" placeholder="房间介绍">
                 </div>
                 <div class="row btn-row">
-                    <button class="confirm-btn">确定创建</button>
+                    <button class="confirm-btn" v-on:click.stop="handleConfirmCreateRoom">确定创建</button>
                 </div>
             </div>
         </div>
@@ -217,7 +217,9 @@
                 open: false,
                 showFormWindow: false,
                 logoImg: '',
-                showLogoCover: true
+                showLogoCover: true,
+                roomName: '',
+                roomDescription: ''
             }
         },
         methods: {
@@ -229,6 +231,11 @@
             },
             closeFormWindow: function () {
                 this.showFormWindow = false;
+                this.roomName = '';
+                this.roomDescription= '';
+                this.$els.roomlogo.files = [];
+                this.logoImg = '';
+                this.showLogoCover = true;
             },
             handleUploadLogo: function () {
                 document.querySelector('.room-logo-input').click();
@@ -254,6 +261,26 @@
                     };
                     reader.readAsDataURL(file);
                 }
+            },
+            handleConfirmCreateRoom: function () {
+                var _myself = this;
+                var data = new FormData();
+                data.append('roomLogo',_myself.$els.roomlogo.files[0]);
+                data.append('roomName',_myself.roomName);
+                data.append('roomDescription',_myself.roomDescription);
+                var xhr = new XMLHttpRequest();
+                xhr.open('post',ConfigMap.apiServer + '/serv/room/create-room');
+                xhr.onload = function () {
+                    var response = JSON.parse(xhr.responseText);
+                    var msg = response.msg;
+                    if (response.code === 200) {
+                        _myself.$dispatch('handleshowmessagewindow',msg);
+                    } else {
+                        msg.type = 'error';
+                        _myself.$dispatch('handleshowmessagewindow', msg);
+                    }
+                };
+                xhr.send(data);
             }
         }
     };

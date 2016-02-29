@@ -16,10 +16,10 @@
     <login-window v-on:handlesigninsuccess="handleSignInSuccess"
             v-on:handleshowmessagewindow="handleShowMessageWindow"></login-window>
     <header class="main-header">
-        <div class="room-avatar"></div>
+        <div class="room-avatar" v-bind:style="{backgroundImage: 'url(' + roomLogo + ')'}"></div>
         <div class="room-content">
-            <h2>vuejs/vue</h2>
-            <p class="text">数据驱动的组件，为现代化的 Web 界面而生</p>
+            <h2 v-text="roomName"></h2>
+            <p class="text" v-text="roomDescription"></p>
         </div>
     </header>
     <div class="chatting-area">

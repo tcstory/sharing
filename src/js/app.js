@@ -17,7 +17,10 @@ var v = new Vue({
         userId: -1,
         userList: [],
         activities: [],
-        messages: []
+        messages: [],
+        roomLogo: '',
+        roomName: '',
+        roomDescription: ''
     },
     methods: {
         handleSignIn: function () {
@@ -86,6 +89,9 @@ var v = new Vue({
                         userId: data.userId
                     });
                 }
+                _myself.roomName = data.roomName;
+                _myself.roomDescription = data.roomDescription;
+                _myself.roomLogo = data.roomLogo;
                 var socket = io();
                 window.socket = socket;
                 socket.on('activities', function (msg) {
