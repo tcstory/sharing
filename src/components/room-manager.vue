@@ -274,6 +274,8 @@
                     var response = JSON.parse(xhr.responseText);
                     var msg = response.msg;
                     if (response.code === 200) {
+                        _myself.closeFormWindow();
+                        msg.type = 'success';
                         _myself.$dispatch('handleshowmessagewindow',msg);
                     } else {
                         msg.type = 'error';

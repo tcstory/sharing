@@ -22,7 +22,11 @@
         color: hsl(1, 48%, 42%);
         background-color: hsl(0, 100%, 98%);
     }
-
+    .message-window.success {
+        background-color: hsl(69, 78%, 96%);
+        color: hsl(79, 72%, 43%);
+        box-shadow: 0 0 0 1px hsla(210, 6%, 14%, 0.22) inset,0 0 0 0 hsla(0, 0%, 0%, 0);
+    }
     .showingmsg-enter {
         animation: 450ms showingmsg-in;
     }
