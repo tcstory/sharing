@@ -6,7 +6,7 @@
         </div>
         <ul class="menu" v-show="open">
             <li class="menu-item" v-on:click.stop="createNewRoom">创建房间</li>
-            <li class="menu-item">修改房间</li>
+            <li class="menu-item" v-on:click.stop="modifyRoom">修改房间</li>
         </ul>
         <div class="form-window-wrapper" v-show="showFormWindow">
             <div class="form-window">
@@ -17,7 +17,7 @@
                 </div>
                 <div class="row logo-row">
                     <div class="room-logo-wrapper">
-                        <div class="room-logo" v-bind:style="{backgroundImage: 'url(' + logoImg + ')'}"></div>
+                        <div class="room-logo" v-bind:style="{backgroundImage: 'url(' + roomLogo + ')'}"></div>
                         <div class="logo-cover" v-show="showLogoCover"><i class=" fa fa-camera-retro"></i></div>
                     </div>
                     <input v-el:roomlogo type="file" accept="image/*" style="display: none"
@@ -25,13 +25,14 @@
                     <button class="upload-btn" v-on:click.stop="handleUploadLogo">上传</button>
                 </div>
                 <div class="row input-row">
-                    <input type="text" v-model="roomName" placeholder="房间名字">
+                    <input type="text" v-model="roomName" placeholder="房间名字" v-bind:disabled="action === 2 ? true: false">
                 </div>
                 <div class="row input-row">
                     <input type="text" v-model="roomDescription" placeholder="房间介绍">
                 </div>
                 <div class="row btn-row">
-                    <button class="confirm-btn" v-on:click.stop="handleConfirmCreateRoom">确定创建</button>
+                    <button class="confirm-btn" v-on:click.stop="handleConfirmCreateRoom" v-show="action === 1">确定创建</button>
+                    <button class="confirm-btn" v-on:click.stop="handleConfirmModifyRoom" v-show="action === 2">完成修改</button>
                 </div>
             </div>
         </div>
@@ -211,15 +212,20 @@
 
 
 <script>
+    var configMap = {
+        createRoom: 1,
+        modifyRoom:2
+    };
     module.exports = {
         data: function () {
             return {
                 open: false,
                 showFormWindow: false,
-                logoImg: '',
+                roomLogo: '',
                 showLogoCover: true,
                 roomName: '',
-                roomDescription: ''
+                roomDescription: '',
+                action: -1
             }
         },
         methods: {
@@ -227,14 +233,33 @@
                 this.open = !this.open;
             },
             createNewRoom: function () {
+                this.action = configMap.createRoom;
                 this.showFormWindow = true;
+            },
+            modifyRoom: function () {
+                var _myself = this;
+                var xhr = new XMLHttpRequest();
+                xhr.open('get',ConfigMap.apiServer + '/serv/room/room-info');
+                xhr.onload = function () {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.code === 200) {
+                        _myself.roomName = response.roomName;
+                        _myself.roomDescription = response.roomDescription;
+                        _myself.roomLogo = response.roomLogo;
+                        _myself.showLogoCover = false;
+                        _myself.action = configMap.modifyRoom;
+                        _myself.showFormWindow = true;
+                    }
+                };
+                xhr.send();
+
             },
             closeFormWindow: function () {
                 this.showFormWindow = false;
                 this.roomName = '';
                 this.roomDescription= '';
                 this.$els.roomlogo.files = [];
-                this.logoImg = '';
+                this.roomLogo = '';
                 this.showLogoCover = true;
             },
             handleUploadLogo: function () {
@@ -251,12 +276,12 @@
                     });
                     ev.target.files = [];
                     ev.target.value = '';
-                    _myself.logoImg = '';
+                    _myself.roomLogo = '';
                     _myself.showLogoCover = true;
                 } else {
                     var reader = new FileReader();
                     reader.onload = function (ev) {
-                        _myself.logoImg = reader.result;
+                        _myself.roomLogo = reader.result;
                         _myself.showLogoCover = false;
                     };
                     reader.readAsDataURL(file);
@@ -280,6 +305,26 @@
                     } else {
                         msg.type = 'error';
                         _myself.$dispatch('handleshowmessagewindow', msg);
+                    }
+                };
+                xhr.send(data);
+            },
+            handleConfirmModifyRoom: function () {
+                var _myself = this;
+                var data = new FormData();
+                if (_myself.$els.roomlogo.files[0]) {
+                    data.append('roomLogo',_myself.$els.roomlogo.files[0]);
+                }
+                data.append('roomDescription',_myself.roomDescription);
+                var xhr = new XMLHttpRequest();
+                xhr.open('post',ConfigMap.apiServer + '/serv/room/modify-room');
+                xhr.onload = function () {
+                    var response = JSON.parse(xhr.responseText);
+                    var msg = response.msg;
+                    if (response.code === 200) {
+                        _myself.closeFormWindow();
+                        msg.type = 'success';
+                        _myself.$dispatch('handleshowmessagewindow',msg);
                     }
                 };
                 xhr.send(data);

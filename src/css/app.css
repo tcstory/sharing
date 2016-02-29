@@ -46,10 +46,11 @@ body {
     box-shadow: 0 1px 0 0 #E4E4E4;
 }
 .main-header .room-avatar {
-    background-image: url(../assets/images/vuejs.png);
+    /*background-image: url(../assets/images/vuejs.png);*/
     width: 48px;
     height: 48px;
     background-size: contain;
+    background-repeat: no-repeat;
     margin-left: 1rem;
 }
 .room-content {
