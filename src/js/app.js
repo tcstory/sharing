@@ -15,6 +15,7 @@ var v = new Vue({
         userName: '',
         userAvatar: '',
         userId: -1,
+        userIntro: '',
         userList: [],
         activities: [],
         messages: [],
@@ -40,7 +41,8 @@ var v = new Vue({
             this.$broadcast('userhadsignedin', {
                 userName: this.userName,
                 userAvatar: this.userAvatar,
-                userId: this.userId
+                userId: this.userId,
+                userIntro: data.userIntro
             });
         },
         handleAnonymousUser: function (data) {
@@ -80,7 +82,8 @@ var v = new Vue({
                     _myself.handleSignInSuccess({
                         userName: data.userName,
                         userAvatar: data.userAvatar,
-                        userId: data.userId
+                        userId: data.userId,
+                        userIntro: data.userIntro
                     })
                 } else {
                     _myself.handleAnonymousUser({
