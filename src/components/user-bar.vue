@@ -15,28 +15,40 @@
     </nav>
     <div class="modify-window-wrapper" v-show="modify">
         <div class="modify-window">
-            <div class="left-part">
-                <div class="row">
-                    <div class="user-avatar" v-bind:style="{backgroundImage: 'url(' + userAvatar + ')'}"></div>
-                </div>
-                <div class="row">
-                    <button class="upload-avatar-btn" v-on:click.stop="handleUploadAvatar">上传头像</button>
-                    <input v-el:useravatarinput type="file" accept="image/*" style="display: none"
-                           v-on:change="handleInputChange($event)">
-                </div>
-            </div>
-            <div class="right-part">
-                <div class="row">
-                    <input type="text" placeholder="用户名" v-model="userName">
-                </div>
-                <div class="row">
-                    <textarea class="user-intro" placeholder="个人简介" v-model="userIntro"></textarea>
-                </div>
-            </div>
             <div class="close-btn-wrapper" v-on:click.stop="closeModifyWindow">
                 <i class="fa fa-times close-btn"></i>
             </div>
-            <button class="confirm-btn" v-on:click.stop="confirmModify">确认修改</button>
+            <div v-show="whichAction === 1" class="modify-basic-info-window">
+                <div class="left-part">
+                    <div class="row">
+                        <div class="user-avatar" v-bind:style="{backgroundImage: 'url(' + userAvatar + ')'}"></div>
+                    </div>
+                    <div class="row">
+                        <button class="upload-avatar-btn" v-on:click.stop="handleUploadAvatar">上传头像</button>
+                        <input v-el:useravatarinput type="file" accept="image/*" style="display: none"
+                               v-on:change="handleInputChange($event)">
+                    </div>
+                </div>
+                <div class="right-part">
+                    <div class="row">
+                        <input type="text" placeholder="用户名" v-model="userName">
+                    </div>
+                    <div class="row">
+                        <textarea class="user-intro" placeholder="个人简介" v-model="userIntro"></textarea>
+                    </div>
+                </div>
+                <button class="confirm-btn" v-on:click.stop="confirmModify">确认修改</button>
+            </div>
+            <div v-show="whichAction ===2" class="change-password-window">
+                <div class="row"><input type="password" placeholder="旧密码" v-model="oldPassword"></div>
+                <div class="row"><input type="password" placeholder="新密码" v-model="enterPassword"></div>
+                <div class="row"><input type="password" placeholder="确认新密码" v-model="reenterPassword"></div>
+                <div class="row"><button class="confirm-modify-password-btn" v-on:click.stop="handleModifyPassword">完成修改</button></div>
+            </div>
+            <div class="tabs-wrapper">
+                <div class="basic-tab tab" v-on:click.stop="toggleTab(1)" v-bind:class="{selected: whichAction === 1}">基本设置</div>
+                <div class="change-password-tab tab" v-on:click.stop="toggleTab(2)" v-bind:class="{selected: whichAction === 2}">修改密码</div>
+            </div>
         </div>
     </div>
 </template>
@@ -144,11 +156,12 @@
         border-radius: .5rem;
         width: 25rem;
         margin: 12.5rem auto;
-        overflow: hidden;
         background-color: white;
+        position: relative;
+    }
+    .modify-basic-info-window {
         padding: 1rem;
         padding-bottom: 2.5rem;
-        position: relative;
     }
     .modify-window .left-part {
         width: 6.25rem;
@@ -233,10 +246,63 @@
         font-size: 1.5rem;
         color: hsl(14, 100%, 57%);
     }
+    .tabs-wrapper {
+        position: absolute;
+        left: 1rem;
+        font-size: .875rem;
+        bottom: 100%;
+        display: flex;
+    }
+    .tabs-wrapper .tab {
+        padding: .25rem .5rem 0;
+        color: white;
+        cursor: pointer;
+        background-color: hsl(0, 0%, 62%);
+    }
+    .tabs-wrapper .basic-tab {
+        border-top-left-radius: .5rem;
+    }
+    .tabs-wrapper .change-password-tab {
+        border-top-right-radius: .5rem;
+    }
+    .tabs-wrapper .tab.selected {
+        color: hsl(0, 100%, 100%);
+        background-color: hsl(122, 39%, 49%);
+    }
+    .change-password-window {
+        padding: 1rem;
+
+    }
+    .change-password-window .row {
+        text-align: center;
+        margin-bottom: .8rem;
+    }
+    .change-password-window .row:last-child {
+        margin-bottom: 0;
+    }
+    .change-password-window .row > input {
+        width: 11.25rem;
+        height: 2rem;
+    }
+    .change-password-window .confirm-modify-password-btn {
+        cursor: pointer;
+        border: none;
+        width: 5rem;
+        height: 2rem;
+        color: hsl(0, 100%, 100%);
+        font-size: .75rem;
+        border-radius: 1rem;
+        background-color: hsl(207, 90%, 54%);
+        outline: none;
+    }
 </style>
 
 <script>
     "use strict";
+    var configMap = {
+        modifyInfo: 1,
+        changePassword:2
+    };
     module.exports = {
         data: function () {
             return {
@@ -245,7 +311,11 @@
                 userAvatar: '',
                 userIntro: '',
                 userId: -1,
-                modify: false
+                modify: false,
+                whichAction: configMap.modifyInfo,
+                oldPassword: '',
+                enterPassword: '',
+                reenterPassword: ''
             }
         },
         computed: {
@@ -260,6 +330,9 @@
         methods: {
             toggleUserMenu: function () {
                 this.openUserMenu = !this.openUserMenu;
+            },
+            toggleTab: function (whichAction) {
+                this.whichAction = whichAction;
             },
             handleSignOut: function () {
                 this.$http.get(ConfigMap.apiServer + '/serv/user/sign-out',{}, {
@@ -285,6 +358,9 @@
             },
             closeModifyWindow: function () {
                 this.modify = false;
+                if (this.whichAction === 2) {
+                    this.cleanPasswordTab();
+                }
             },
             handleUploadAvatar: function () {
                 this.$els.useravatarinput.click();
@@ -330,8 +406,44 @@
                     }
                 };
                 xhr.send(data);
+            },
+            handleModifyPassword: function () {
+                var _myself = this;
+                if(_myself.enterPassword !== _myself.reenterPassword) {
+                    _myself.$dispatch('handleshowmessagewindow',{
+                        type: 'error',
+                        title: '错误',
+                        content: '两次输入的密码不一致'
+                    });
+                    return;
+                }
+                var xhr = new XMLHttpRequest();
+                xhr.open('post',ConfigMap.apiServer + '/serv/user/modify-password');
+                xhr.onload = function () {
+                    var response = JSON.parse(xhr.responseText);
+                    var msg = response.msg;
+                    if (response.code === 200) {
+                        _myself.modify = false;
+                        _myself.cleanPasswordTab();
+                        msg.type = 'success';
+                        _myself.$dispatch('handleshowmessagewindow',msg);
+                    } else {
+                        msg.type = 'error';
+                        _myself.$dispatch('handleshowmessagewindow', msg);
+                    }
+                };
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send(JSON.stringify({
+                    newPassword: _myself.enterPassword,
+                    oldPassword: _myself.oldPassword
+                }))
+            },
+            cleanPasswordTab: function () {
+                this.oldPassword = '';
+                this.enterPassword = '';
+                this.reenterPassword = '';
+                this.whichAction = 1;
             }
-
         },
         events: {
             'userhadsignedin': function (data) {
