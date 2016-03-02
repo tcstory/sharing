@@ -50,13 +50,13 @@
         margin: .25rem;
         margin-right:1rem;
         width: 1.875rem;
-        background-size: cover;
         height: 1.875rem;
         border-radius: .25rem;
         background-repeat: no-repeat;
         cursor: pointer;
         -webkit-flex-shrink: 0;
         flex-shrink: 0;
+        background-size: 100%;
     }
 </style>
 

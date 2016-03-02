@@ -26,11 +26,11 @@
     .users .user {
         margin: .25rem;
         width: 1.875rem;
-        background-size: cover;
         height: 1.875rem;
         border-radius: .25rem;
         background-repeat: no-repeat;
         cursor: pointer;
+        background-size: 100%;
     }
 </style>
 

@@ -57,10 +57,10 @@
     .profile .user-avatar {
         /*background-image: url(../assets/images/user-avatar.jpg);*/
         width: 1.875rem;
-        background-size: cover;
         height: 1.875rem;
         border-radius: .25rem;
         background-repeat: no-repeat;
+        background-size: 100%;
     }
     .profile .arrow-down {
         width: 3rem;
