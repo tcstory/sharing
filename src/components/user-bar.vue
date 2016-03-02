@@ -21,7 +21,7 @@
             <div v-show="whichAction === 1" class="modify-basic-info-window">
                 <div class="left-part">
                     <div class="row">
-                        <div class="user-avatar" v-bind:style="{backgroundImage: 'url(' + userAvatar + ')'}"></div>
+                        <div class="user-avatar" v-bind:style="{backgroundImage: 'url(' + userAvatarInput + ')'}"></div>
                     </div>
                     <div class="row">
                         <button class="upload-avatar-btn" v-on:click.stop="handleUploadAvatar">上传头像</button>
@@ -31,10 +31,10 @@
                 </div>
                 <div class="right-part">
                     <div class="row">
-                        <input type="text" placeholder="用户名" v-model="userName">
+                        <input type="text" placeholder="用户名" v-model="userNameInput">
                     </div>
                     <div class="row">
-                        <textarea class="user-intro" placeholder="个人简介" v-model="userIntro"></textarea>
+                        <textarea class="user-intro" placeholder="个人简介" v-model="userIntroInput"></textarea>
                     </div>
                 </div>
                 <button class="confirm-btn" v-on:click.stop="confirmModify">确认修改</button>
@@ -309,6 +309,9 @@
                 openUserMenu: false,
                 userName: '',
                 userAvatar: '',
+                userIntroInput: '',
+                userNameInput: '',
+                userAvatarInput: '',
                 userIntro: '',
                 userId: -1,
                 modify: false,
@@ -355,11 +358,18 @@
             handleModifyInfo: function () {
                 this.modify = true;
                 this.openUserMenu = false;
+                this.userNameInput = this.userName;
+                this.userAvatarInput =this.userAvatar;
+                this.userIntroInput = this.userIntro;
             },
             closeModifyWindow: function () {
                 this.modify = false;
                 if (this.whichAction === 2) {
                     this.cleanPasswordTab();
+                } else if (this.whichAction === 1) {
+                    this.userNameInput = '';
+                    this.userAvatarInput = '';
+                    this.userIntroInput =  '';
                 }
             },
             handleUploadAvatar: function () {
@@ -376,11 +386,11 @@
                     });
                     ev.target.files = [];
                     ev.target.value = '';
-                    _myself.userAvatar = '';
+                    _myself.userAvatarInput = '';
                 } else {
                     var reader = new FileReader();
                     reader.onload = function (ev) {
-                        _myself.userAvatar = reader.result;
+                        _myself.userAvatarInput = reader.result;
                     };
                     reader.readAsDataURL(file);
                 }
@@ -389,14 +399,17 @@
                 var _myself = this;
                 var data = new FormData();
                 data.append('userAvatar',_myself.$els.useravatarinput.files[0]);
-                data.append('userName',_myself.userName);
-                data.append('userIntro',_myself.userIntro);
+                data.append('userName',_myself.userNameInput);
+                data.append('userIntro',_myself.userIntroInput);
                 var xhr = new XMLHttpRequest();
                 xhr.open('post',ConfigMap.apiServer + '/serv/user/modify-data');
                 xhr.onload = function () {
                     var response = JSON.parse(xhr.responseText);
                     var msg = response.msg;
                     if (response.code === 200) {
+                        this.userName = this.userNameInput;
+                        this.userAvatar =this.userAvatarInput;
+                        this.userIntro = this.userIntroInput;
                         _myself.modify = false;
                         msg.type = 'success';
                         _myself.$dispatch('handleshowmessagewindow',msg);
