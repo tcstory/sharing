@@ -5,6 +5,7 @@
             <i class="fa fa-th-large" v-show="!open"></i>
         </div>
         <ul class="menu" v-show="open">
+            <li class="menu-item" v-on:click.stop="joinRoom">加入房间</li>
             <li class="menu-item" v-on:click.stop="createNewRoom">创建房间</li>
             <li class="menu-item" v-on:click.stop="modifyRoom">修改房间</li>
         </ul>
@@ -33,6 +34,28 @@
                 <div class="row btn-row">
                     <button class="confirm-btn" v-on:click.stop="handleConfirmCreateRoom" v-show="action === 1">确定创建</button>
                     <button class="confirm-btn" v-on:click.stop="handleConfirmModifyRoom" v-show="action === 2">完成修改</button>
+                </div>
+            </div>
+        </div>
+        <div class="join-room-window-wrapper" v-show="showJoinRoomWindow">
+            <div class="join-room-window">
+                <div class="close-btn-wrapper" v-on:click.stop="closeJoinRoomWindow">
+                    <i class="fa fa-times close-btn"></i>
+                </div>
+                <div class="row">
+                    <input type="text" placeholder="请输入房间名字" v-model="searchRoomName">
+                </div>
+                <div class="row">
+                    <div class="room-list" v-show="searchedResult.length !== 0">
+                        <div class="room-item" v-for="room in searchedResult">
+                            <i class="room-icon fa fa-users"></i>
+                            <span class="room-name" v-text="room.roomName"></span>
+                            <i class="join-icon fa fa-plus"></i>
+                        </div>
+                    </div>
+                    <p class="prompt-text" v-show="searchedResult.length === 0">
+                        房间不存在?<span class="create-new-room" v-on:click.stop="justCreateNewRoom">创建</span>一个吧!
+                    </p>
                 </div>
             </div>
         </div>
@@ -208,14 +231,75 @@
         background-color: gray;
         pointer-events: none;
     }
+    .join-room-window-wrapper {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 200;
+    }
+    .join-room-window {
+        width: 20rem;
+        position: relative;
+        margin: 12.5rem auto;
+        padding: 2rem 1rem .5rem;
+        border-radius: .5rem;
+        background-color: white;
+    }
+    .join-room-window .close-btn-wrapper {
+        position: absolute;
+        right: .5rem;
+        top: .5rem;
+    }
+    .join-room-window .row {
+    }
+    .join-room-window .row:nth-of-type(2) {
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    .join-room-window .row > input {
+        width: 11rem;
+        height: 1.5rem;
+        text-align: center;
+    }
+    .room-list {
+        font-size: .875rem;
+    }
+    .room-list .room-item {
+        width: 11rem;
+        height: 1.5rem;
+        margin: 0 auto;
+    }
+    .room-list .room-icon {
+        color: hsl(207, 90%, 54%);
+        margin-right: .25rem;
+    }
+    .room-list .join-icon {
+        cursor: pointer;
+        float: right;
+        color: hsl(122, 39%, 49%);
+    }
+    .join-room-window .prompt-text {
+        font-size: 14px;
+        text-align: center;
+    }
+    .join-room-window .create-new-room {
+        color: hsl(207, 90%, 54%);
+        cursor: pointer;
+        font-weight: 600;
+    }
 </style>
 
 
 <script>
     var configMap = {
         createRoom: 1,
-        modifyRoom:2
+        modifyRoom:2,
+        searchDelay: 1000
     };
+    var timeId = -1;
     module.exports = {
         data: function () {
             return {
@@ -225,7 +309,38 @@
                 showLogoCover: true,
                 roomName: '',
                 roomDescription: '',
-                action: -1
+                action: -1,
+                showJoinRoomWindow: false,
+                searchedResult: [],
+                searchRoomName: ''
+            }
+        },
+        watch: {
+            searchRoomName: function (newVal,oldVal) {
+                if (newVal != '') {
+                    var _myself = this;
+                    if (timeId === -1) {
+                        timeId = setTimeout(function () {
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('get', ConfigMap.apiServer + '/serv/room/get-room-list/' + newVal);
+                            xhr.onload = function () {
+                                timeId = -1;
+                                var response  = JSON.parse(xhr.responseText);
+                                if (response.code === 200) {
+                                    _myself.searchedResult = response.result;
+                                } else {
+
+                                }
+                            };
+                            xhr.send();
+                        }, configMap.searchDelay)
+                    } else {
+                        clearTimeout(timeId);
+                        timeId = -1;
+                    }
+                } else {
+                    this.searchedResult = [];
+                }
             }
         },
         methods: {
@@ -328,6 +443,18 @@
                     }
                 };
                 xhr.send(data);
+            },
+            joinRoom: function () {
+                this.showJoinRoomWindow = true;
+            },
+            closeJoinRoomWindow: function () {
+                this.searchRoomName = '';
+                this.showJoinRoomWindow = false;
+            },
+            justCreateNewRoom: function () {
+                this.searchRoomName = '';
+                this.showJoinRoomWindow = false;
+                this.createNewRoom();
             }
         }
     };
