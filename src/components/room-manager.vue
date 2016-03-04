@@ -5,7 +5,7 @@
             <i class="fa fa-th-large" v-show="!open"></i>
         </div>
         <ul class="menu" v-show="open">
-            <li class="menu-item" v-on:click.stop="joinRoom">加入房间</li>
+            <li class="menu-item" v-on:click.stop="handleJoinRoom">加入房间</li>
             <li class="menu-item" v-on:click.stop="createNewRoom">创建房间</li>
             <li class="menu-item" v-on:click.stop="modifyRoom">修改房间</li>
         </ul>
@@ -50,7 +50,7 @@
                         <div class="room-item" v-for="room in searchedResult">
                             <i class="room-icon fa fa-users"></i>
                             <span class="room-name" v-text="room.roomName"></span>
-                            <i class="join-icon fa fa-plus"></i>
+                            <i class="join-icon fa fa-plus" v-on:click.stop="joinRoom(room.roomId)"></i>
                         </div>
                     </div>
                     <p class="prompt-text" v-show="searchedResult.length === 0">
@@ -444,7 +444,7 @@
                 };
                 xhr.send(data);
             },
-            joinRoom: function () {
+            handleJoinRoom: function () {
                 this.showJoinRoomWindow = true;
             },
             closeJoinRoomWindow: function () {
@@ -455,6 +455,17 @@
                 this.searchRoomName = '';
                 this.showJoinRoomWindow = false;
                 this.createNewRoom();
+            },
+            joinRoom: function (roomId) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('get', ConfigMap.apiServer + '/serv/room/join-room/' + roomId);
+                xhr.onload = function () {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.code === 200) {
+                        location.reload();
+                    }
+                };
+                xhr.send();
             }
         }
     };
