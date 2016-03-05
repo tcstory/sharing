@@ -374,6 +374,7 @@
                 this.showFormWindow = false;
                 this.roomName = '';
                 this.roomDescription= '';
+                this.$els.roomlogo.value = '';
                 this.$els.roomlogo.files = [];
                 this.roomLogo = '';
                 this.showLogoCover = true;
