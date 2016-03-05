@@ -405,6 +405,15 @@
             },
             handleConfirmCreateRoom: function () {
                 var _myself = this;
+                if (_myself.roomName === '') {
+                    var msg = {
+                        type: 'error',
+                        title: '错误',
+                        content: '房间的名字不能为空'
+                    };
+                    _myself.$dispatch('handleshowmessagewindow', msg);
+                    return;
+                }
                 var data = new FormData();
                 data.append('roomLogo',_myself.$els.roomlogo.files[0]);
                 data.append('roomName',_myself.roomName);
