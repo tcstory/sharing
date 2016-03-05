@@ -11,7 +11,7 @@
               v-on:handlesignup="handleSignUp"
               v-on:handlesignout="handleSignOut"
               v-on:handleshowmessagewindow="handleShowMessageWindow"></user-bar>
-    <room-manager v-on:handleshowmessagewindow="handleShowMessageWindow"></room-manager>
+    <room-manager v-bind:user-id="userId" v-on:handleshowmessagewindow="handleShowMessageWindow"></room-manager>
 </aside>
 <main class="chatting-wrapper">
     <login-window v-on:handlesigninsuccess="handleSignInSuccess"

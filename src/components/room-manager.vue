@@ -6,8 +6,8 @@
         </div>
         <ul class="menu" v-show="open">
             <li class="menu-item" v-on:click.stop="handleJoinRoom">加入房间</li>
-            <li class="menu-item" v-on:click.stop="createNewRoom">创建房间</li>
-            <li class="menu-item" v-on:click.stop="modifyRoom">修改房间</li>
+            <li class="menu-item" v-show="userId[0] === 'u'" v-on:click.stop="createNewRoom">创建房间</li>
+            <li class="menu-item" v-show="userId[0] === 'u'" v-on:click.stop="modifyRoom">修改房间</li>
         </ul>
         <div class="form-window-wrapper" v-show="showFormWindow">
             <div class="form-window">
@@ -301,6 +301,7 @@
     };
     var timeId = -1;
     module.exports = {
+        props:['userId'],
         data: function () {
             return {
                 open: false,
