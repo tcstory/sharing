@@ -71,7 +71,7 @@ var v = new Vue({
     },
     ready: function () {
         var _myself = this;
-        this.$http.get(ConfigMap.apiServer + '/serv/user/basic-info',{}, {
+        this.$http.get('/serv/user/basic-info',{}, {
             xhr: {
                 withCredentials: true
             }

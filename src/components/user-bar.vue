@@ -338,7 +338,7 @@
                 this.whichAction = whichAction;
             },
             handleSignOut: function () {
-                this.$http.get(ConfigMap.apiServer + '/serv/user/sign-out',{}, {
+                this.$http.get('/serv/user/sign-out',{}, {
                     xhr: {
                         withCredentials: true
                     }
@@ -402,7 +402,7 @@
                 data.append('userName',_myself.userNameInput);
                 data.append('userIntro',_myself.userIntroInput);
                 var xhr = new XMLHttpRequest();
-                xhr.open('post',ConfigMap.apiServer + '/serv/user/modify-data');
+                xhr.open('post','/serv/user/modify-data');
                 xhr.onload = function () {
                     var response = JSON.parse(xhr.responseText);
                     var msg = response.msg;
@@ -431,7 +431,7 @@
                     return;
                 }
                 var xhr = new XMLHttpRequest();
-                xhr.open('post',ConfigMap.apiServer + '/serv/user/modify-password');
+                xhr.open('post','/serv/user/modify-password');
                 xhr.onload = function () {
                     var response = JSON.parse(xhr.responseText);
                     var msg = response.msg;

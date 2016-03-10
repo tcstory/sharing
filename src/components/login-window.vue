@@ -241,7 +241,7 @@
             signIn: function () {
                 var _myself = this;
                 if (Utils.validate(_myself.userName)) {
-                    _myself.$http.post(ConfigMap.apiServer + '/serv/user/sign-in', {
+                    _myself.$http.post('/serv/user/sign-in', {
                         user_name: _myself.userName,
                         user_password: _myself.userPassword
                     }, {
@@ -272,7 +272,7 @@
             signUp: function () {
                 var _myself = this;
                 if (Utils.validate(_myself.userName)) {
-                    _myself.$http.post(ConfigMap.apiServer + '/serv/user/sign-up', {
+                    _myself.$http.post('/serv/user/sign-up', {
                         user_name: _myself.userName,
                         user_password: _myself.userPassword
                     }, {

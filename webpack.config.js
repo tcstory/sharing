@@ -56,8 +56,7 @@ module.exports = {
         }),
         new ExtractTextPlugin(debug ? 'css/app.css' : "css/app.[chunkhash:8].css"),
         new webpack.ProvidePlugin({
-            'Utils': path.resolve('./src/js/utils/utils.js'), //要用path.resolve,不然组件找不到模块
-            'ConfigMap': path.resolve('./src/js/config.js')
+            'Utils': path.resolve('./src/js/utils/utils.js') //要用path.resolve,不然组件找不到模块
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: "vendor",

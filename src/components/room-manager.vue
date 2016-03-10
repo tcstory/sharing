@@ -323,7 +323,7 @@
                     if (timeId === -1) {
                         timeId = setTimeout(function () {
                             var xhr = new XMLHttpRequest();
-                            xhr.open('get', ConfigMap.apiServer + '/serv/room/get-room-list/' + newVal);
+                            xhr.open('get', '/serv/room/get-room-list/' + newVal);
                             xhr.onload = function () {
                                 timeId = -1;
                                 var response  = JSON.parse(xhr.responseText);
@@ -355,7 +355,7 @@
             modifyRoom: function () {
                 var _myself = this;
                 var xhr = new XMLHttpRequest();
-                xhr.open('get',ConfigMap.apiServer + '/serv/room/room-info');
+                xhr.open('get', '/serv/room/room-info');
                 xhr.onload = function () {
                     var response = JSON.parse(xhr.responseText);
                     if (response.code === 200) {
@@ -420,7 +420,7 @@
                 data.append('roomName',_myself.roomName);
                 data.append('roomDescription',_myself.roomDescription);
                 var xhr = new XMLHttpRequest();
-                xhr.open('post',ConfigMap.apiServer + '/serv/room/create-room');
+                xhr.open('post','/serv/room/create-room');
                 xhr.onload = function () {
                     var response = JSON.parse(xhr.responseText);
                     var msg = response.msg;
@@ -443,7 +443,7 @@
                 }
                 data.append('roomDescription',_myself.roomDescription);
                 var xhr = new XMLHttpRequest();
-                xhr.open('post',ConfigMap.apiServer + '/serv/room/modify-room');
+                xhr.open('post','/serv/room/modify-room');
                 xhr.onload = function () {
                     var response = JSON.parse(xhr.responseText);
                     var msg = response.msg;
@@ -469,7 +469,7 @@
             },
             joinRoom: function (roomId) {
                 var xhr = new XMLHttpRequest();
-                xhr.open('get', ConfigMap.apiServer + '/serv/room/join-room/' + roomId);
+                xhr.open('get', '/serv/room/join-room/' + roomId);
                 xhr.onload = function () {
                     var response = JSON.parse(xhr.responseText);
                     if (response.code === 200) {
