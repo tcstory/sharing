@@ -370,6 +370,7 @@
                     this.userNameInput = '';
                     this.userAvatarInput = '';
                     this.userIntroInput =  '';
+                    this.$els.useravatarinput.value = '';
                 }
             },
             handleUploadAvatar: function () {
@@ -384,7 +385,6 @@
                         content: '上传的头像太大',
                         type: 'error'
                     });
-                    ev.target.files = [];
                     ev.target.value = '';
                     _myself.userAvatarInput = '';
                 } else {

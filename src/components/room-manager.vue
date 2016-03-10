@@ -375,7 +375,6 @@
                 this.roomName = '';
                 this.roomDescription= '';
                 this.$els.roomlogo.value = '';
-                this.$els.roomlogo.files = [];
                 this.roomLogo = '';
                 this.showLogoCover = true;
             },
@@ -391,7 +390,6 @@
                         content: '上传的图片太大',
                         type: 'error'
                     });
-                    ev.target.files = [];
                     ev.target.value = '';
                     _myself.roomLogo = '';
                     _myself.showLogoCover = true;
