@@ -1,24 +1,22 @@
 <template>
     <div class="post-wrapper" v-show="curLabel === 'forum'">
-        <div class="post">
-            <div class="user-avatar"></div>
-            <header class="post-title" v-on:click.stop="openThisPost('id')">关于vuex的几个问题</header>
-        </div>
-        <div class="post">
-            <div class="user-avatar"></div>
-            <header class="post-title">求助,求助,关于vue-cli的使用方法</header>
+        <div class="post" v-for="post in posts">
+            <div class="user-avatar" v-bind:style="{backgroundImage: 'url('+ post.authorAvatar + ')'}"></div>
+            <div class="wrapper">
+                <header class="post-title" v-on:click.stop="openThisPost(post.postId)" v-text="post.postTitle"></header>
+                <p><span v-text="post.authorName" class="author-name"></span><span v-text="post.postTime"></span></p>
+            </div>
         </div>
         <article class="post-window" v-show="showPostWindow">
             <button v-on:click.stop="handleGoback" class="goback-btn"><i class="fa fa-reply"></i></button>
-            <header>关于vuex的几个问题</header>
+            <header v-text="curPost.postTitle"></header>
             <div class="post-content">
                 <div class="row">
-                    <div class="user-avatar"></div>
+                    <div class="user-avatar"v-bind:style="{backgroundImage: 'url('+ curPost.authorAvatar + ')'}"></div>
                     <div class="wrapper">
-                        <span class="user-name">甜脆的故事</span>
+                        <span class="user-name" v-text="curPost.authorName"></span>
                         <span class="post-time">a day ago</span>
-                        <div class="content">
-                            I don't know how to use vuex.can any one help me?
+                        <div class="content" v-text="curPost.content">
                         </div>
                     </div>
                 </div>
@@ -26,53 +24,12 @@
                     <button class="quick-replay-btn" v-on:click.stop="handleQuickReplay">回复</button>
                 </div>
             </div>
-            <div class="post-replay">
-                <div class="user-avatar"></div>
+            <div class="post-replay" v-for="item in curPost.replay">
+                <div class="user-avatar" v-bind:style="{backgroundImage: 'url('+ item.userAvatar + ')'}"></div>
                 <div class="wrapper">
-                    <span class="user-name">甜脆的故事</span>
-                    <span class="post-time">a day ago</span>
-                    <div class="content">
-                        I don't know how to use vuex.can any one help me?
-                    </div>
-                </div>
-            </div>
-            <div class="post-replay">
-                <div class="user-avatar"></div>
-                <div class="wrapper">
-                    <span class="user-name">甜脆的故事</span>
-                    <span class="post-time">a day ago</span>
-                    <div class="content">
-                        I don't know how to use vuex.can any one help me?
-                    </div>
-                </div>
-            </div>
-            <div class="post-replay">
-                <div class="user-avatar"></div>
-                <div class="wrapper">
-                    <span class="user-name">甜脆的故事</span>
-                    <span class="post-time">a day ago</span>
-                    <div class="content">
-                        I don't know how to use vuex.can any one help me?
-                    </div>
-                </div>
-            </div>
-            <div class="post-replay">
-                <div class="user-avatar"></div>
-                <div class="wrapper">
-                    <span class="user-name">甜脆的故事</span>
-                    <span class="post-time">a day ago</span>
-                    <div class="content">
-                        I don't know how to use vuex.can any one help me?
-                    </div>
-                </div>
-            </div>
-            <div class="post-replay">
-                <div class="user-avatar"></div>
-                <div class="wrapper">
-                    <span class="user-name">甜脆的故事</span>
-                    <span class="post-time">a day ago</span>
-                    <div class="content">
-                        I don't know how to use vuex.can any one help me?
+                    <span class="user-name" v-text="item.userName"></span>
+                    <span class="post-time" v-text="item.replayTime"></span>
+                    <div class="content" v-text="item.content">
                     </div>
                 </div>
             </div>
@@ -98,12 +55,20 @@
         border-right: solid 4px #FF3333;
         margin-bottom: .5rem;
     }
+    .post .wrapper {
+        display: inline-block;
+    }
+    .post .author-name {
+        color: #333;
+        font-size: 14px;
+    }
 
     .user-avatar {
-        background-image: url('http://7qn8rp.com1.z0.glb.clouddn.com/dog.jpg');
+        /*background-image: url('http://7qn8rp.com1.z0.glb.clouddn.com/dog.jpg');*/
         width: 3rem;
         height: 3rem;
         background-size: contain;
+        background-repeat: no-repeat;
         border-radius: .25rem;
         display: inline-block;
         vertical-align: top;
@@ -111,8 +76,6 @@
     }
 
     .post-title {
-        display: inline-block;
-        margin-left: 1rem;
         font-size: 1.125rem;
         color: #337ab7;
         cursor: pointer;
@@ -237,19 +200,32 @@
         props:['curLabel'],
         data: function () {
             return {
-                showPostWindow: false
+                showPostWindow: false,
+                posts: [],
+                curPost: {}
             }
         },
         methods: {
             handleQuickReplay: function () {
                 scrollToTextArea();
             },
-            openThisPost: function (id) {
-                console.log(id);
-                this.showPostWindow = true;
+            openThisPost: function (curPostId) {
+                var len = this.posts.length;
+                for (var i = 0; i < len; i++) {
+                    if (this.posts[i].postId === curPostId) {
+                        this.curPost = this.posts[i];
+                        this.showPostWindow = true;
+                        break;
+                    }
+                }
             },
             handleGoback: function () {
                 this.showPostWindow = false;
+            }
+        },
+        events: {
+            'getpostlist': function (posts) {
+                this.posts = posts;
             }
         }
     };

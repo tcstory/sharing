@@ -22,7 +22,7 @@ var v = new Vue({
         roomLogo: '',
         roomName: '',
         roomDescription: '',
-        curLabel: 'forum'
+        curLabel: 'chat'
     },
     methods: {
         handleSignIn: function () {
@@ -60,7 +60,12 @@ var v = new Vue({
             this.$broadcast('showmessagewindow',msg)
         },
         handleToggle: function () {
-            this.curLabel = this.curLabel === 'chat' ? 'forum':'chat';
+            if (this.curLabel === 'chat') {
+                this.curLabel = 'forum';
+                getPostsList();
+            } else {
+                this.curLabel = 'chat';
+            }
         }
     },
     components: {
@@ -122,5 +127,17 @@ var v = new Vue({
         });
     }
 });
+
+function getPostsList() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('get','serv/post/get-post-list');
+    xhr.onload = function () {
+        var response = JSON.parse(xhr.responseText);
+        if (response.code === 200) {
+            v.$broadcast('getpostlist',response.posts);
+        }
+    };
+    xhr.send();
+}
 
 
