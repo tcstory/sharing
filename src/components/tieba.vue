@@ -38,6 +38,15 @@
                 <button class="replay-post-btn">回复</button>
             </div>
         </article>
+        <article class="edit-post-window" v-show="editPost">
+            <button v-on:click.stop="handleCancelPost" class="cancel-post-btn"><i class="fa fa-reply"></i></button>
+            <header class="post-title-wrapper"><input v-model="newPostTitle" type="text" placeholder="请输入帖子的标题" class="post-title-input"></header>
+            <div class="post-editor-wrapper">
+                <textarea class="post-text-area" v-model="newPostContent"></textarea>
+                <button class="confirm-create-post" v-on:click.stop="confirmCreatePost">发布</button>
+            </div>
+        </article>
+        <button class="create-post-btn" v-on:click.stop="handleCreatePost">发帖</button>
     </div>
 </template>
 
@@ -97,6 +106,76 @@
         border-radius: 1rem;
         padding: 1rem 2rem 2rem;
         overflow-y: scroll;
+    }
+    .edit-post-window {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        right: 0;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        background-color: white;
+        z-index: 100;
+        -webkit-transition: all 450ms;
+        transition: all 450ms;
+        box-shadow: 0 0 4px 4px hsl(14, 100%, 57%);
+        border-radius: 1rem;
+        padding: 1rem 2rem 2rem;
+        overflow-y: scroll;
+    }
+    .edit-post-window .post-title-wrapper {
+        text-align: center;
+    }
+    .edit-post-window .post-title-input {
+        height: 2.5rem;
+        font-size: 1.125rem;
+        padding: .25rem;
+        width: 320px;
+        border: none;
+        border-bottom: 1px solid #9E9E9E;
+        text-align: center;
+        outline: none;
+    }
+    .edit-post-window .post-editor-wrapper {
+        width: 40rem;
+        height: 20rem;
+        margin: 6rem auto;
+        position: relative;
+    }
+    .post-editor-wrapper .post-text-area {
+        width: 100%;
+        height: 100%;
+        padding: 1rem;
+        outline: none;
+        border-radius: .25rem;
+        font-size: 1.25rem;
+        resize: none;
+        border: 1px solid #9E9E9E;
+    }
+    .post-editor-wrapper .confirm-create-post {
+        width: 64px;
+        height: 64px;
+        border: none;
+        outline: none;
+        background-color: #8BC34A;
+        color: white;
+        font-size: 1.25rem;
+        border-radius: 50%;
+        cursor: pointer;
+        position: absolute;
+        right: .5rem;
+        bottom: .5rem;
+    }
+    .edit-post-window .cancel-post-btn {
+        outline: none;
+        border: none;
+        width: 48px;
+        height: 48px;
+        font-size: 2rem;
+        background-color: transparent;
+        color: #E91E63;;
+        cursor: pointer;
     }
 
     .post-window header {
@@ -193,6 +272,20 @@
         color: #9C27B0;
         cursor: pointer;
     }
+    .create-post-btn {
+        position: absolute;
+        bottom: 1rem;
+        right: 1rem;
+        width: 100px;
+        height: 32px;
+        border: none;
+        color: white;
+        background-color: #00BCD4;
+        font-size: 1.125rem;
+        border-radius: .5rem;
+        cursor: pointer;
+
+    }
 </style>
 
 <script>
@@ -201,8 +294,11 @@
         data: function () {
             return {
                 showPostWindow: false,
+                editPost: false,
                 posts: [],
-                curPost: {}
+                curPost: {},
+                newPostTitle: '',
+                newPostContent: ''
             }
         },
         methods: {
@@ -221,6 +317,33 @@
             },
             handleGoback: function () {
                 this.showPostWindow = false;
+            },
+            handleCreatePost: function () {
+                this.editPost = !this.editPost;
+            },
+            handleCancelPost: function () {
+                this.editPost = false;
+            },
+            confirmCreatePost: function () {
+                var _myself = this;
+                var xhr = new XMLHttpRequest();
+                xhr.open('post', '/serv/post/create-post');
+                xhr.onload = function () {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.code === 200) {
+                        var msg = response.msg;
+                        msg.type = 'success';
+                        _myself.$dispatch('handleshowmessagewindow', msg);
+                        _myself.newPostTitle = '';
+                        _myself.newPostContent = '';
+                        _myself.editPost = false;
+                    }
+                };
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send(JSON.stringify({
+                    title: _myself.newPostTitle,
+                    content: _myself.newPostContent
+                }));
             }
         },
         events: {

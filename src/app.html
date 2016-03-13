@@ -32,7 +32,7 @@
             </div>
             <messages v-bind:messages="messages"  v-show="curLabel === 'chat'"></messages>
             <chat-input v-show="curLabel === 'chat'"></chat-input>
-            <tieba v-bind:cur-label="curLabel"></tieba>
+            <tieba v-on:handleshowmessagewindow="handleShowMessageWindow" v-bind:cur-label="curLabel"></tieba>
         </div>
         <div class="side-bar">
             <people-list v-bind:user-list="userList"></people-list>
