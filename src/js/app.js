@@ -21,7 +21,8 @@ var v = new Vue({
         messages: [],
         roomLogo: '',
         roomName: '',
-        roomDescription: ''
+        roomDescription: '',
+        curLabel: 'forum'
     },
     methods: {
         handleSignIn: function () {
@@ -57,6 +58,9 @@ var v = new Vue({
         },
         handleShowMessageWindow: function (msg) {
             this.$broadcast('showmessagewindow',msg)
+        },
+        handleToggle: function () {
+            this.curLabel = this.curLabel === 'chat' ? 'forum':'chat';
         }
     },
     components: {
@@ -67,7 +71,8 @@ var v = new Vue({
         'messages': require('../components/messages.vue'),
         'chat-input': require('../components/chat.vue'),
         'message-manager': require('../components/message-manager.vue'),
-        'room-manager': require('../components/room-manager.vue')
+        'room-manager': require('../components/room-manager.vue'),
+        'tieba': require('../components/tieba.vue')
     },
     ready: function () {
         var _myself = this;

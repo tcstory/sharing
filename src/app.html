@@ -25,8 +25,14 @@
     </header>
     <div class="chatting-area">
         <div class="chatting">
-            <messages v-bind:messages="messages"></messages>
-            <chat-input></chat-input>
+            <div class="toggle-btn-wrapper">
+                <i class="fa fa-caret-square-o-down toggle-btn" v-on:click.stop="handleToggle" v-bind:class="curLabel"></i>
+                <div class="chat-room-label label" v-show="curLabel === 'chat'">聊天室</div>
+                <div class="forum-label label"v-show="curLabel === 'forum'">乐园</div>
+            </div>
+            <messages v-bind:messages="messages"  v-show="curLabel === 'chat'"></messages>
+            <chat-input v-show="curLabel === 'chat'"></chat-input>
+            <tieba v-bind:cur-label="curLabel"></tieba>
         </div>
         <div class="side-bar">
             <people-list v-bind:user-list="userList"></people-list>

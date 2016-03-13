@@ -88,3 +88,51 @@ body {
     top: 0;
     bottom: 0;
 }
+.chatting .toggle-btn-wrapper {
+    position: absolute;
+    right: 1rem;
+    top: .5rem;
+    width: 8.25rem;
+    height: 2rem;
+}
+.chatting .toggle-btn-wrapper .toggle-btn {
+    width: 2rem;
+    height: 2rem;
+    float: right;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.chatting .toggle-btn-wrapper .toggle-btn.chat {
+    color: #21ba45;
+}
+.chatting .toggle-btn-wrapper .toggle-btn.forum {
+    color: #f2711c;
+}
+.chatting .toggle-btn-wrapper .label {
+    width: 6.25rem;
+    height:2rem;
+    font-size: 16px;
+    background-color: transparent;
+    border-radius: .25rem;
+    outline: none;
+    text-align: center;
+    line-height: 2rem;
+    transition: all 450ms;
+    margin-bottom: .5rem;
+}
+.chatting .toggle-btn-wrapper .label.hidden {
+    height: 0;
+    opacity: 0;
+    margin: 0;
+}
+.chatting .toggle-btn-wrapper .chat-room-label {
+    border: 1px solid #009c95;
+    color: hsl(122, 39%, 49%);
+}
+.chatting .toggle-btn-wrapper .forum-label {
+    border: 1px solid #f2711c;
+    color: #f2711c;
+}
