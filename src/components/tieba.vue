@@ -4,7 +4,8 @@
             <div class="user-avatar" v-bind:style="{backgroundImage: 'url('+ post.authorAvatar + ')'}"></div>
             <div class="wrapper">
                 <header class="post-title" v-on:click.stop="openThisPost(post.postId)" v-text="post.postTitle"></header>
-                <p><span v-text="post.authorName" class="author-name"></span><span v-text="post.postTime | timestamp" class="post-time"></span></p>
+                <p><span v-text="post.authorName" class="author-name"></span><span v-text="post.postTime | timestamp"
+                                                                                   class="post-time"></span></p>
             </div>
         </div>
         <article class="post-window" v-show="showPostWindow">
@@ -15,13 +16,14 @@
                     <div class="user-avatar" v-bind:style="{backgroundImage: 'url('+ curPost.authorAvatar + ')'}"></div>
                     <div class="wrapper">
                         <span class="user-name" v-text="curPost.authorName"></span>
-                        <span class="post-time"  v-text="curPost.postTime | timestamp"></span>
+                        <span class="post-time" v-text="curPost.postTime | timestamp"></span>
                         <div class="content" v-text="curPost.content">
                         </div>
                     </div>
                 </div>
                 <div class="quick-btns">
-                    <button class="quick-replay-btn" v-on:click.stop="handleQuickReplay" v-show="userId[0] !== 'v'">回复</button>
+                    <button class="quick-replay-btn" v-on:click.stop="handleQuickReplay" v-show="userId[0] !== 'v'">回复
+                    </button>
                 </div>
             </div>
             <div class="post-replay" v-for="item in curPost.replay">
@@ -33,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            <div class="post-replay-input"  v-show="userId[0] !== 'v'">
+            <div class="post-replay-input" v-show="userId[0] !== 'v'">
                 <textarea class="post-replay-area" v-model="replayContent"></textarea>
                 <button class="replay-post-btn" v-on:click.stop="confirmReplayPost">回复</button>
             </div>
@@ -73,6 +75,7 @@
         color: #333;
         font-size: .875rem;
     }
+
     .post .post-time {
         color: #FF9800;
         font-size: .875rem;
@@ -114,6 +117,7 @@
         padding: 1rem 2rem 2rem;
         overflow-y: scroll;
     }
+
     .post-window .post-time {
         color: #FF9800;
         font-size: .875rem;
@@ -309,7 +313,7 @@
 
 <script>
     module.exports = {
-        props: ['curLabel','userId'],
+        props: ['curLabel', 'userId'],
         data: function () {
             return {
                 showPostWindow: false,
@@ -326,7 +330,7 @@
                 scrollToTextArea();
             },
             openThisPost: function (curPostId) {
-                getPostDetails(this,curPostId)
+                getPostDetails(this, curPostId)
             },
             handleGoback: function () {
                 this.showPostWindow = false;
@@ -339,6 +343,23 @@
             },
             confirmCreatePost: function () {
                 var _myself = this;
+                if (_myself.newPostTitle === '') {
+                    var msg = {
+                        type: 'error',
+                        title: '错误',
+                        content: '帖子的标题不能为空'
+                    };
+                    _myself.$dispatch('handleshowmessagewindow', msg);
+                    return;
+                } else if (_myself.newPostContent === '') {
+                    var msg = {
+                        type: 'error',
+                        title: '错误',
+                        content: '帖子的内容不能为空'
+                    };
+                    _myself.$dispatch('handleshowmessagewindow', msg);
+                    return;
+                }
                 var xhr = new XMLHttpRequest();
                 xhr.open('post', '/serv/post/create-post');
                 xhr.onload = function () {
@@ -361,13 +382,22 @@
             },
             confirmReplayPost: function () {
                 var _myself = this;
+                if (_myself.replayContent === '') {
+                    var msg = {
+                        type: 'error',
+                        title: '错误',
+                        content: '回复的内容不能为空'
+                    };
+                    _myself.$dispatch('handleshowmessagewindow', msg);
+                    return;
+                }
                 var xhr = new XMLHttpRequest();
                 xhr.open('post', '/serv/post/replay-post');
                 xhr.onload = function () {
                     var response = JSON.parse(xhr.responseText);
                     if (response.code === 200) {
                         _myself.replayContent = '';
-                        getPostDetails(_myself,_myself.curPost.postId);
+                        getPostDetails(_myself, _myself.curPost.postId);
                     }
                 };
                 xhr.setRequestHeader('Content-Type', 'application/json');
@@ -394,7 +424,7 @@
     function scrollToTextArea() {
         document.querySelector('.post-replay-area').scrollIntoView()
     }
-    function getPostDetails(vm,curPostId) {
+    function getPostDetails(vm, curPostId) {
         var xhr = new XMLHttpRequest();
         xhr.open('get', '/serv/post/get-post-details?postId=' + curPostId);
         xhr.onload = function () {
