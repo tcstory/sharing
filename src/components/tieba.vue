@@ -12,7 +12,7 @@
             <header v-text="curPost.postTitle"></header>
             <div class="post-content">
                 <div class="row">
-                    <div class="user-avatar"v-bind:style="{backgroundImage: 'url('+ curPost.authorAvatar + ')'}"></div>
+                    <div class="user-avatar" v-bind:style="{backgroundImage: 'url('+ curPost.authorAvatar + ')'}"></div>
                     <div class="wrapper">
                         <span class="user-name" v-text="curPost.authorName"></span>
                         <span class="post-time">a day ago</span>
@@ -34,13 +34,14 @@
                 </div>
             </div>
             <div class="post-replay-input">
-                <textarea class="post-replay-area"></textarea>
-                <button class="replay-post-btn">回复</button>
+                <textarea class="post-replay-area" v-model="replayContent"></textarea>
+                <button class="replay-post-btn" v-on:click.stop="confirmReplayPost">回复</button>
             </div>
         </article>
         <article class="edit-post-window" v-show="editPost">
             <button v-on:click.stop="handleCancelPost" class="cancel-post-btn"><i class="fa fa-reply"></i></button>
-            <header class="post-title-wrapper"><input v-model="newPostTitle" type="text" placeholder="请输入帖子的标题" class="post-title-input"></header>
+            <header class="post-title-wrapper"><input v-model="newPostTitle" type="text" placeholder="请输入帖子的标题"
+                                                      class="post-title-input"></header>
             <div class="post-editor-wrapper">
                 <textarea class="post-text-area" v-model="newPostContent"></textarea>
                 <button class="confirm-create-post" v-on:click.stop="confirmCreatePost">发布</button>
@@ -64,9 +65,11 @@
         border-right: solid 4px #FF3333;
         margin-bottom: .5rem;
     }
+
     .post .wrapper {
         display: inline-block;
     }
+
     .post .author-name {
         color: #333;
         font-size: 14px;
@@ -107,6 +110,7 @@
         padding: 1rem 2rem 2rem;
         overflow-y: scroll;
     }
+
     .edit-post-window {
         position: absolute;
         width: 100%;
@@ -124,9 +128,11 @@
         padding: 1rem 2rem 2rem;
         overflow-y: scroll;
     }
+
     .edit-post-window .post-title-wrapper {
         text-align: center;
     }
+
     .edit-post-window .post-title-input {
         height: 2.5rem;
         font-size: 1.125rem;
@@ -137,12 +143,14 @@
         text-align: center;
         outline: none;
     }
+
     .edit-post-window .post-editor-wrapper {
         width: 40rem;
         height: 20rem;
         margin: 6rem auto;
         position: relative;
     }
+
     .post-editor-wrapper .post-text-area {
         width: 100%;
         height: 100%;
@@ -153,6 +161,7 @@
         resize: none;
         border: 1px solid #9E9E9E;
     }
+
     .post-editor-wrapper .confirm-create-post {
         width: 64px;
         height: 64px;
@@ -167,6 +176,7 @@
         right: .5rem;
         bottom: .5rem;
     }
+
     .edit-post-window .cancel-post-btn {
         outline: none;
         border: none;
@@ -230,17 +240,20 @@
         float: right;
         cursor: pointer;
     }
+
     .post-replay {
         padding-bottom: 1rem;
         padding-top: 1rem;
         border-bottom: 1px solid rgba(153, 153, 153, 0.45);
     }
+
     .post-replay-input {
         width: 100%;
         height: 8rem;
         margin-top: 2rem;
         position: relative;
     }
+
     .post-replay-area {
         border: 1px solid rgba(153, 153, 153, 0.45);
         width: 100%;
@@ -250,6 +263,7 @@
         box-shadow: 0 0 2px 2px #8bc34a;
         border-radius: .5rem;
     }
+
     .replay-post-btn {
         width: 80px;
         height: 32px;
@@ -262,6 +276,7 @@
         color: white;
         font-size: 1.125rem;
     }
+
     .goback-btn {
         outline: none;
         border: none;
@@ -272,6 +287,7 @@
         color: #9C27B0;
         cursor: pointer;
     }
+
     .create-post-btn {
         position: absolute;
         bottom: 1rem;
@@ -290,7 +306,7 @@
 
 <script>
     module.exports = {
-        props:['curLabel'],
+        props: ['curLabel'],
         data: function () {
             return {
                 showPostWindow: false,
@@ -298,7 +314,8 @@
                 posts: [],
                 curPost: {},
                 newPostTitle: '',
-                newPostContent: ''
+                newPostContent: '',
+                replayContent: ''
             }
         },
         methods: {
@@ -306,14 +323,7 @@
                 scrollToTextArea();
             },
             openThisPost: function (curPostId) {
-                var len = this.posts.length;
-                for (var i = 0; i < len; i++) {
-                    if (this.posts[i].postId === curPostId) {
-                        this.curPost = this.posts[i];
-                        this.showPostWindow = true;
-                        break;
-                    }
-                }
+                getPostDetails(this,curPostId)
             },
             handleGoback: function () {
                 this.showPostWindow = false;
@@ -334,6 +344,7 @@
                         var msg = response.msg;
                         msg.type = 'success';
                         _myself.$dispatch('handleshowmessagewindow', msg);
+                        _myself.$dispatch('handleupdatepostlist', msg);
                         _myself.newPostTitle = '';
                         _myself.newPostContent = '';
                         _myself.editPost = false;
@@ -343,6 +354,23 @@
                 xhr.send(JSON.stringify({
                     title: _myself.newPostTitle,
                     content: _myself.newPostContent
+                }));
+            },
+            confirmReplayPost: function () {
+                var _myself = this;
+                var xhr = new XMLHttpRequest();
+                xhr.open('post', '/serv/post/replay-post');
+                xhr.onload = function () {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.code === 200) {
+                        _myself.replayContent = '';
+                        getPostDetails(_myself,_myself.curPost.postId);
+                    }
+                };
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send(JSON.stringify({
+                    content: _myself.replayContent,
+                    postId: _myself.curPost.postId
                 }));
             }
         },
@@ -354,5 +382,18 @@
     };
     function scrollToTextArea() {
         document.querySelector('.post-replay-area').scrollIntoView()
+    }
+    function getPostDetails(vm,curPostId) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('get', '/serv/post/get-post-details?postId=' + curPostId);
+        xhr.onload = function () {
+            var response = JSON.parse(xhr.responseText);
+            if (response.code === 200) {
+                vm.curPost = response.post;
+                vm.showPostWindow = true;
+
+            }
+        };
+        xhr.send();
     }
 </script>

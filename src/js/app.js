@@ -59,6 +59,9 @@ var v = new Vue({
         handleShowMessageWindow: function (msg) {
             this.$broadcast('showmessagewindow',msg)
         },
+        handleUpdatePostList: function () {
+            getPostsList();
+        },
         handleToggle: function () {
             if (this.curLabel === 'chat') {
                 this.curLabel = 'forum';
