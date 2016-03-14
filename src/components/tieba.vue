@@ -4,7 +4,7 @@
             <div class="user-avatar" v-bind:style="{backgroundImage: 'url('+ post.authorAvatar + ')'}"></div>
             <div class="wrapper">
                 <header class="post-title" v-on:click.stop="openThisPost(post.postId)" v-text="post.postTitle"></header>
-                <p><span v-text="post.authorName" class="author-name"></span><span v-text="post.postTime"></span></p>
+                <p><span v-text="post.authorName" class="author-name"></span><span v-text="post.postTime | timestamp" class="post-time"></span></p>
             </div>
         </div>
         <article class="post-window" v-show="showPostWindow">
@@ -15,7 +15,7 @@
                     <div class="user-avatar" v-bind:style="{backgroundImage: 'url('+ curPost.authorAvatar + ')'}"></div>
                     <div class="wrapper">
                         <span class="user-name" v-text="curPost.authorName"></span>
-                        <span class="post-time">a day ago</span>
+                        <span class="post-time"  v-text="curPost.postTime | timestamp"></span>
                         <div class="content" v-text="curPost.content">
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                 <div class="user-avatar" v-bind:style="{backgroundImage: 'url('+ item.userAvatar + ')'}"></div>
                 <div class="wrapper">
                     <span class="user-name" v-text="item.userName"></span>
-                    <span class="post-time" v-text="item.replayTime"></span>
+                    <span class="post-time" v-text="item.replayTime | timestamp2"></span>
                     <div class="content" v-text="item.content">
                     </div>
                 </div>
@@ -71,7 +71,12 @@
 
     .post .author-name {
         color: #333;
-        font-size: 14px;
+        font-size: .875rem;
+    }
+    .post .post-time {
+        color: #FF9800;
+        font-size: .875rem;
+        margin-left: 1rem;
     }
 
     .user-avatar {
@@ -108,6 +113,11 @@
         border-radius: 1rem;
         padding: 1rem 2rem 2rem;
         overflow-y: scroll;
+    }
+    .post-window .post-time {
+        color: #FF9800;
+        font-size: .875rem;
+        margin-left: 1rem;
     }
 
     .edit-post-window {
@@ -203,12 +213,6 @@
         color: #337ab7;
         font-size: .875rem;
         font-weight: bold;
-    }
-
-    .post-window .post-time {
-        color: #777;
-        text-decoration: underline;
-        font-size: .75rem;
     }
 
     .post-window .wrapper {
@@ -371,6 +375,14 @@
                     content: _myself.replayContent,
                     postId: _myself.curPost.postId
                 }));
+            }
+        },
+        filters: {
+            'timestamp': function (value) {
+                return new Date(value).toLocaleDateString("chinese");
+            },
+            'timestamp2': function (value) {
+                return new Date(value).toLocaleString("chinese");
             }
         },
         events: {
