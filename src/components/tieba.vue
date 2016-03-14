@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="quick-btns">
-                    <button class="quick-replay-btn" v-on:click.stop="handleQuickReplay">回复</button>
+                    <button class="quick-replay-btn" v-on:click.stop="handleQuickReplay" v-show="userId[0] !== 'v'">回复</button>
                 </div>
             </div>
             <div class="post-replay" v-for="item in curPost.replay">
@@ -33,7 +33,7 @@
                     </div>
                 </div>
             </div>
-            <div class="post-replay-input">
+            <div class="post-replay-input"  v-show="userId[0] !== 'v'">
                 <textarea class="post-replay-area" v-model="replayContent"></textarea>
                 <button class="replay-post-btn" v-on:click.stop="confirmReplayPost">回复</button>
             </div>
@@ -47,7 +47,7 @@
                 <button class="confirm-create-post" v-on:click.stop="confirmCreatePost">发布</button>
             </div>
         </article>
-        <button class="create-post-btn" v-on:click.stop="handleCreatePost">发帖</button>
+        <button class="create-post-btn" v-on:click.stop="handleCreatePost" v-show="userId[0] !== 'v'">发帖</button>
     </div>
 </template>
 
@@ -62,7 +62,6 @@
     .post {
         height: 4.25rem;
         margin-right: 2rem;
-        border-right: solid 4px #FF3333;
         margin-bottom: .5rem;
     }
 
@@ -105,7 +104,7 @@
         z-index: 100;
         -webkit-transition: all 450ms;
         transition: all 450ms;
-        box-shadow: 0 0 4px 4px hsl(14, 100%, 57%);
+        border: 1px solid #e4e4e4;
         border-radius: 1rem;
         padding: 1rem 2rem 2rem;
         overflow-y: scroll;
@@ -123,7 +122,7 @@
         z-index: 100;
         -webkit-transition: all 450ms;
         transition: all 450ms;
-        box-shadow: 0 0 4px 4px hsl(14, 100%, 57%);
+        border: 1px solid #e4e4e4;
         border-radius: 1rem;
         padding: 1rem 2rem 2rem;
         overflow-y: scroll;
@@ -306,7 +305,7 @@
 
 <script>
     module.exports = {
-        props: ['curLabel'],
+        props: ['curLabel','userId'],
         data: function () {
             return {
                 showPostWindow: false,
