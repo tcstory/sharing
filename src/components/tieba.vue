@@ -17,8 +17,7 @@
                     <div class="wrapper">
                         <span class="user-name" v-text="curPost.authorName"></span>
                         <span class="post-time" v-text="curPost.postTime | timestamp"></span>
-                        <div class="content" v-text="curPost.content">
-                        </div>
+                        <div class="content">{{{curPost.content}}}</div>
                     </div>
                 </div>
                 <div class="quick-btns">
@@ -45,7 +44,11 @@
             <header class="post-title-wrapper"><input v-model="newPostTitle" type="text" placeholder="请输入帖子的标题"
                                                       class="post-title-input"></header>
             <div class="post-editor-wrapper">
-                <textarea class="post-text-area" v-model="newPostContent"></textarea>
+                <input type="file" v-on:change="handleUploadingImage" style="display: none;" accept="image/*"
+                       v-el:upload-image>
+                <div class="post-toolbar"><i class="fa fa-picture-o upload-image-btn"
+                                             v-on:click.stop="handleUploadImage"></i></div>
+                <div class="post-text-area" contenteditable="true" v-el:post-text-area></div>
                 <button class="confirm-create-post" v-on:click.stop="confirmCreatePost">发布</button>
             </div>
         </article>
@@ -159,20 +162,37 @@
 
     .edit-post-window .post-editor-wrapper {
         width: 40rem;
-        height: 20rem;
+        min-height: 20rem;
         margin: 6rem auto;
         position: relative;
     }
 
     .post-editor-wrapper .post-text-area {
         width: 100%;
-        height: 100%;
+        min-height: 20rem;
         padding: 1rem;
         outline: none;
         border-radius: .25rem;
         font-size: 1.25rem;
         resize: none;
         border: 1px solid #9E9E9E;
+    }
+    .post-editor-wrapper .post-text-area img {
+        max-width: 33.75rem;
+    }
+    .post-editor-wrapper .post-toolbar {
+        width: 100%;
+        background-color: #8BC34A;
+        height: 2rem;
+        margin-bottom: .25rem;
+        border-radius: .25rem;
+    }
+
+    .post-editor-wrapper .post-toolbar .upload-image-btn {
+        font-size: 2rem;
+        margin-left: .25rem;
+        color: white;
+        cursor: pointer;
     }
 
     .post-editor-wrapper .confirm-create-post {
@@ -211,6 +231,10 @@
 
     .post-window .content {
         margin-top: .25rem;
+    }
+
+    .post-window .content img {
+        max-width: 33.75rem;
     }
 
     .post-window .user-name {
@@ -321,7 +345,6 @@
                 posts: [],
                 curPost: {},
                 newPostTitle: '',
-                newPostContent: '',
                 replayContent: ''
             }
         },
@@ -371,13 +394,14 @@
                         _myself.$dispatch('handleupdatepostlist', msg);
                         _myself.newPostTitle = '';
                         _myself.newPostContent = '';
+                        _myself.$els.postTextArea.innerHTML = '';
                         _myself.editPost = false;
                     }
                 };
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.send(JSON.stringify({
                     title: _myself.newPostTitle,
-                    content: _myself.newPostContent
+                    content: _myself.$els.postTextArea.innerHTML
                 }));
             },
             confirmReplayPost: function () {
@@ -405,6 +429,26 @@
                     content: _myself.replayContent,
                     postId: _myself.curPost.postId
                 }));
+            },
+            handleUploadImage: function () {
+                var _myself = this;
+                _myself.$els.uploadImage.click();
+            },
+            handleUploadingImage: function () {
+                var _myself = this;
+                var xhr = new XMLHttpRequest();
+                xhr.open('post', '/serv/post/upload-post-image');
+                xhr.onload = function () {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.code === 200) {
+                        _myself.$els.postTextArea.focus();
+                        document.execCommand('insertImage', false, response.imageUrl);
+                        _myself.$els.uploadImage.value = '';
+                    }
+                };
+                var d = new FormData();
+                d.append('postImage', _myself.$els.uploadImage.files[0]);
+                xhr.send(d);
             }
         },
         filters: {
